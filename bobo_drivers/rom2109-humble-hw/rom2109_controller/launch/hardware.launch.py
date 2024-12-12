@@ -47,7 +47,7 @@ def generate_launch_description():
         cmd=[
             'sed', '-i', 
             's/enable_odom_tf: true/enable_odom_tf: false/g', 
-            f'/home/mr_robot/test_ws/src/bobo_simulation/simulation_packages/romrobots_description/config/{rom_robot_name}_controllers.yaml'
+            f'/home/mr_robot/devel_ws/src/bobo_drivers/rom2109-humble-hw/{rom_robot_name}_description/config/{rom_robot_name}_controllers.yaml'
         ],
         output='screen',
         # cmd=['ros2', 'param', 'set', '/diff_cont', 'enagle_odom_tf', 'True'],
@@ -57,7 +57,7 @@ def generate_launch_description():
         cmd=[
             'sed', '-i', 
             's/enable_odom_tf: false/enable_odom_tf: true/g', 
-            f'/home/mr_robot/test_ws/src/bobo_simulation/simulation_packages/romrobots_description/config/{rom_robot_name}_controllers.yaml'
+            f'/home/mr_robot/devel_ws/src/bobo_drivers/rom2109-humble-hw/{rom_robot_name}_description/config/{rom_robot_name}_controllers.yaml'
         ],
         output='screen',
         # cmd=['ros2', 'param', 'set', '/diff_cont', 'enagle_odom_tf', 'False'],

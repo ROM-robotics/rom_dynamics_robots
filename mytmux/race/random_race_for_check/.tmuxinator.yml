@@ -1,0 +1,35 @@
+# ./.tmuxinator.yml
+
+name: ROM Dynamics 
+root: ~/
+
+pre_window: export PS1=" \[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;45m\]>>>\[$(tput sgr0)\] \[$(tput sgr0)\]"
+
+startup_window: RandomWalk
+# startup_pane: 0
+
+windows:
+  - Gazebo: 
+      root: ~/
+      panes:
+        - clear; source ~/.bashrc; ros2 launch romrobots_gazebo simulation.launch.py use_rviz:=False odom_tf:=False
+  - EKF: 
+      root: ~/
+      panes:
+        - clear; source ~/.bashrc; sleep 5; ros2 launch bobo_ekf ekf.launch.py publish_tf:=True use_sim_time:=False
+  - Rqt: 
+      root: ~/
+      panes:
+        - clear; source ~/.bashrc; sleep 6; ros2 launch bobo_carto cartographer_mapping.launch.py # with linear.x=0.5, and angular.z=0.2
+  - Bag: 
+      root: ~/
+      panes:
+        - clear; source ~/.bashrc; sleep 7; ros2 bag record -o circle_test_plotjuggler /diff_controller/odom /odom /imu/out
+  - Plot:
+      root: ~/
+      panes:
+        - clear; source ~/.bashrc; sleep 8; ros2 run plotjuggler plotjuggler
+  - RandomWalk:
+      root: ~/
+      panes:
+        - clear; source ~/.bashrc; sleep 10; ros2 run bobo_nav2 random_walk

@@ -1,0 +1,27 @@
+# ./.tmuxinator.yml
+
+name: ROM Dynamics 
+root: /mytmux/bags
+
+pre_window: export PS1=" \[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;45m\]>>>\[$(tput sgr0)\] \[$(tput sgr0)\]"
+
+startup_window: Rviz2
+# startup_pane: 0
+
+windows:
+  - Cartographer: 
+      root: ~/
+      panes:
+        - clear; source ~/.bashrc; sleep 2; ros2 launch bobo_carto rosbags_play_and_test.launch.py map_subscribe_transient_local:=true use_slamtoolbox:=False
+  - Rviz2: 
+      root: ~/
+      panes:
+        - clear; source ~/.bashrc; ros2 run rviz2 rviz2 -d /ros2_ws/src/developer_packages/bobo_carto/rviz/carto_tune.rviz
+  - ROSBag: 
+      root: /mytmux/bags
+      panes:
+        - clear; source ~/.bashrc; ros2 bag play /mytmux/bags/five_rooms_v0.5_w0.3_data
+
+
+
+

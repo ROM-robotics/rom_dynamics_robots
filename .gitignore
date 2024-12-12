@@ -1,0 +1,13 @@
+.vscode
+./.vscode
+./*/.vscode
+./*/*/.vscode
+./*/*/*/.vscode
+./*/*/*/*/.vscode
+./bags
+./bags
+./*/bags
+./*/*/bags
+./*/*/*/bags
+./*/*/*/*/bags
+

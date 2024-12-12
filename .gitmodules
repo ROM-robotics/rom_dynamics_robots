@@ -1,3 +1,0 @@
-[submodule "developer_packages_for_container/icp_tester"]
-	path = developer_packages_for_container/icp_tester
-	url = git@github.com:ROM-robotics/icp_tester.git

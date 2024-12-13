@@ -23,6 +23,13 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+add_executable(joy src/joy_dynamic_increase.cpp)
+ament_target_dependencies(joy rclcpp sensor_msgs geometry_msgs)
+
+install(TARGETS
+ joy
+ DESTINATION lib/${PROJECT_NAME})
+
 install(DIRECTORY
 	launch
   config

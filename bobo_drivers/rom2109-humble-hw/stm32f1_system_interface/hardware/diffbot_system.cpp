@@ -9,6 +9,7 @@
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
 
+const double rds_to_rpm_constant = 60/(2*M_PI);
 namespace stm32f1_system_interface
 {
 
@@ -189,8 +190,6 @@ hardware_interface::return_type DiffDriveStm32Hardware::read(const rclcpp::Time 
   RCLCPP_INFO(rclcpp::get_logger("Zeroing Test"), "left wheel pos : %.15f", wheel_l_.pos);
   RCLCPP_INFO(rclcpp::get_logger("Zeroing Test"), "rad_per_count : %.15f \033[1;0m", wheel_l_.rads_per_count);
   */
- RCLCPP_INFO(rclcpp::get_logger("\033[1;36mZeroing Test"), "right wheel encoder : %d", wheel_r_.enc);
- RCLCPP_INFO(rclcpp::get_logger("\033[1;35mZeroing Test"), "left wheel encoder : %d", wheel_l_.enc);
  
   return hardware_interface::return_type::OK;
 }
@@ -207,9 +206,16 @@ hardware_interface::return_type stm32f1_system_interface ::DiffDriveStm32Hardwar
   //RCLCPP_INFO(rclcpp::get_logger("\033[1;36mZeroing Test"), "left wheel encoder : %d", wheel_l_.enc);
 
   //int left_rpm = int(wheel_l_.cmd*10); int right_rpm = int(wheel_r_.cmd*10);
+  
   // RCLCPP_INFO(rclcpp::get_logger("\033[1;36m1 meter test"), "right wheel rpm : %.5f", wheel_r_.cmd);
-//  RCLCPP_INFO(rclcpp::get_logger("\033[1;35m1 meter test"), "left rpm : %.5f", wheel_l_.cmd);
-  comms_.set_motor_values(wheel_l_.cmd, wheel_r_.cmd);
+  // RCLCPP_INFO(rclcpp::get_logger("\033[1;35m1 meter test"), "left rpm : %.5f", wheel_l_.cmd);
+
+// radian per second  to rpm conversion
+  int right_rpm = rds_to_rpm_constant*wheel_r_.cmd;
+  int left_rpm = rds_to_rpm_constant*wheel_l_.cmd;
+  RCLCPP_INFO(rclcpp::get_logger("\033[1;36m1 meter test"), "right wheel rpm : %d", right_rpm);
+  RCLCPP_INFO(rclcpp::get_logger("\033[1;35m1 meter test"), "left rpm : %d", left_rpm);
+  comms_.set_motor_values(left_rpm, right_rpm);
   return hardware_interface::return_type::OK;
 }
 

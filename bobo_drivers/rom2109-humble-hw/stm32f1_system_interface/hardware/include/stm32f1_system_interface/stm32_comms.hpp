@@ -110,8 +110,8 @@ public:
     std::string token_1 = response.substr(0, del_pos);
     std::string token_2 = response.substr(del_pos + delimiter.length());
 
-    right_enc_ticks = std::atoi(token_1.c_str());     
-    left_enc_ticks = std::atoi(token_2.c_str());     
+    left_enc_ticks = std::atoi(token_1.c_str());     
+    right_enc_ticks = std::atoi(token_2.c_str());     
   }
 
   void set_motor_values(float right_wheel_rds, float left_wheel_rds)

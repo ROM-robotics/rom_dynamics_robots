@@ -3,7 +3,8 @@
 ###### စစ်ဆေးရန်
 ```
 <your_robot>_controller/launch/hardware.launch.py  မှာ string edit ( sed ) အသုံးပြုထားသော
-/path/to/<your_robot>_controller/config/<your_robot>_controllers.yaml လမ်းကြောင်းကိုစစ်ဆေးပါ။
+/path/to/<your_robot>_controller/config/<your_robot>_controllers.yaml 
+လမ်းကြောင်း နှစ်ခုကို မှန်/မမှန် စစ်ဆေးပါ။
 ```
 
 ###### ဖြည့်စွက်ရန်

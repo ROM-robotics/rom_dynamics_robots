@@ -36,14 +36,15 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <sensor_msgs/msg/joy.hpp>
 
 #include "teleop_twist_joy/teleop_twist_joy.hpp"
+#include <cstdlib>
 
 #define ROS_INFO_NAMED RCUTILS_LOG_INFO_NAMED
 #define ROS_INFO_COND_NAMED RCUTILS_LOG_INFO_EXPRESSION_NAMED
 
 #define UNUSED(x) (void)(x)
 
-const double linear_speed = 0.100000;
-const double angular_speed= 0.070000;
+double linear_speed = 0.100000;
+double angular_speed= 0.070000;
 
 namespace teleop_twist_joy
 {
@@ -305,6 +306,14 @@ TeleopTwistJoy::TeleopTwistJoy(const rclcpp::NodeOptions& options) : Node("teleo
   };
 
   callback_handle = this->add_on_set_parameters_callback(param_callback);
+
+  // ROM ADD ( get values from environment variables )
+  const char* linear_speed_name = "LINEAR_SPEED";
+  const char* angular_speed_name = "ANGULAR_SPEED";
+  const char* linear_speed_value = std::getenv(linear_speed_name);
+  const char* angular_speed_value = std::getenv(angular_speed_name);
+  linear_speed = strtod(linear_speed_value, NULL);
+  angular_speed = strtod(angular_speed_value, NULL);
 }
 
 TeleopTwistJoy::~TeleopTwistJoy()

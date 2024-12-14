@@ -1,8 +1,9 @@
-##### Please Follow these
+##### Please Follow these instructions
 
 ###### စစ်ဆေးရန်
 ```
-<your_robot>_controller/launch/hardware.launch.py  မှာ string edit ( sed ) အသုံးပြုထားသော /path/to/<your_robot>_controller/config/<your_robot>_controllers.yaml လမ်းကြောင်းကိုစစ်ဆေးပါ။
+<your_robot>_controller/launch/hardware.launch.py  မှာ string edit ( sed ) အသုံးပြုထားသော
+/path/to/<your_robot>_controller/config/<your_robot>_controllers.yaml လမ်းကြောင်းကိုစစ်ဆေးပါ။
 ```
 
 ###### ဖြည့်စွက်ရန်

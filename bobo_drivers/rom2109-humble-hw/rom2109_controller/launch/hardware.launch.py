@@ -47,7 +47,7 @@ def generate_launch_description():
         cmd=[
             'sed', '-i', 
             's/enable_odom_tf: true/enable_odom_tf: false/g', 
-            f'/home/mr_robot/devel_ws/src/bobo_drivers/rom2109-humble-hw/{rom_robot_name}_description/config/{rom_robot_name}_controllers.yaml'
+            f'/home/mr_robot/devel_ws/src/bobo_drivers/rom2109-humble-hw/{rom_robot_name}_controller/config/{rom_robot_name}_controllers.yaml'
         ],
         output='screen',
         # cmd=['ros2', 'param', 'set', '/diff_cont', 'enagle_odom_tf', 'True'],
@@ -57,7 +57,7 @@ def generate_launch_description():
         cmd=[
             'sed', '-i', 
             's/enable_odom_tf: false/enable_odom_tf: true/g', 
-            f'/home/mr_robot/devel_ws/src/bobo_drivers/rom2109-humble-hw/{rom_robot_name}_description/config/{rom_robot_name}_controllers.yaml'
+            f'/home/mr_robot/devel_ws/src/bobo_drivers/rom2109-humble-hw/{rom_robot_name}_controller/config/{rom_robot_name}_controllers.yaml'
         ],
         output='screen',
         # cmd=['ros2', 'param', 'set', '/diff_cont', 'enagle_odom_tf', 'False'],
@@ -121,9 +121,9 @@ def generate_launch_description():
         sed_command_true,
         robot_state_pub_node,
         joint_state_broadcaster_spawner,
-        # delay_rviz_after_joint_state_broadcaster_spawner,
         delay_base_controller_spawner_after_joint_state_broadcaster_spawner,
         twist_mux_node,
+        # delay_rviz_after_joint_state_broadcaster_spawner,--
     ]
 
     return LaunchDescription(nodes)

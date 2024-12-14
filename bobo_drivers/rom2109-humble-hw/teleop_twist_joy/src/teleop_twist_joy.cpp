@@ -40,6 +40,11 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #define ROS_INFO_NAMED RCUTILS_LOG_INFO_NAMED
 #define ROS_INFO_COND_NAMED RCUTILS_LOG_INFO_EXPRESSION_NAMED
 
+#define UNUSED(x) (void)(x)
+
+const double linear_speed = 0.100000;
+const double angular_speed= 0.070000;
+
 namespace teleop_twist_joy
 {
 
@@ -326,13 +331,16 @@ void TeleopTwistJoy::Impl::sendCmdVelMsg(const sensor_msgs::msg::Joy::SharedPtr 
 {
   // Initializes with zeros by default.
   auto cmd_vel_msg = std::make_unique<geometry_msgs::msg::Twist>();
-
-  cmd_vel_msg->linear.x = getVal(joy_msg, axis_linear_map, scale_linear_map[which_map], "x");
-  cmd_vel_msg->linear.y = getVal(joy_msg, axis_linear_map, scale_linear_map[which_map], "y");
-  cmd_vel_msg->linear.z = getVal(joy_msg, axis_linear_map, scale_linear_map[which_map], "z");
-  cmd_vel_msg->angular.z = getVal(joy_msg, axis_angular_map, scale_angular_map[which_map], "yaw");
-  cmd_vel_msg->angular.y = getVal(joy_msg, axis_angular_map, scale_angular_map[which_map], "pitch");
-  cmd_vel_msg->angular.x = getVal(joy_msg, axis_angular_map, scale_angular_map[which_map], "roll");
+  if(joy_msg->axes[1] > 0 || joy_msg->axes[7] > 0) { cmd_vel_msg->linear.x = linear_speed; }
+  if(joy_msg->axes[2] > 0 || joy_msg->axes[6] > 0) { cmd_vel_msg->angular.z = angular_speed; }
+  if(joy_msg->axes[2] < 0 || joy_msg->axes[6] < 0) { cmd_vel_msg->angular.z = -angular_speed; }
+  //cmd_vel_msg->linear.x = getVal(joy_msg, axis_linear_map, scale_linear_map[which_map], "x");
+  //cmd_vel_msg->linear.y = getVal(joy_msg, axis_linear_map, scale_linear_map[which_map], "y");
+  //cmd_vel_msg->linear.z = getVal(joy_msg, axis_linear_map, scale_linear_map[which_map], "z");
+  //cmd_vel_msg->angular.z = getVal(joy_msg, axis_angular_map, scale_angular_map[which_map], "yaw");
+  //cmd_vel_msg->angular.y = getVal(joy_msg, axis_angular_map, scale_angular_map[which_map], "pitch");
+  //cmd_vel_msg->angular.x = getVal(joy_msg, axis_angular_map, scale_angular_map[which_map], "roll");
+  UNUSED(which_map);
 
   cmd_vel_pub->publish(std::move(cmd_vel_msg));
   sent_disable_msg = false;
@@ -340,15 +348,19 @@ void TeleopTwistJoy::Impl::sendCmdVelMsg(const sensor_msgs::msg::Joy::SharedPtr 
 
 void TeleopTwistJoy::Impl::joyCallback(const sensor_msgs::msg::Joy::SharedPtr joy_msg)
 {
-  if (enable_turbo_button >= 0 &&
-      static_cast<int>(joy_msg->buttons.size()) > enable_turbo_button &&
-      joy_msg->buttons[enable_turbo_button])
-  {
-    sendCmdVelMsg(joy_msg, "turbo");
-  }
-  else if (!require_enable_button ||
-	   (static_cast<int>(joy_msg->buttons.size()) > enable_button &&
-           joy_msg->buttons[enable_button]))
+  // if (enable_turbo_button >= 0 &&
+  //     static_cast<int>(joy_msg->buttons.size()) > enable_turbo_button &&
+  //     joy_msg->buttons[enable_turbo_button])
+  // {
+  //   sendCmdVelMsg(joy_msg, "turbo");
+  // }
+  // else if (!require_enable_button ||
+	//    (static_cast<int>(joy_msg->buttons.size()) > enable_button &&
+  //          joy_msg->buttons[enable_button]))
+  // {
+  //   sendCmdVelMsg(joy_msg, "normal");
+  // }
+  if (!require_enable_button || ( static_cast<int>(joy_msg->buttons.size()) > enable_button ))
   {
     sendCmdVelMsg(joy_msg, "normal");
   }

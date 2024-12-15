@@ -14,8 +14,9 @@ from nav2_common.launch import RewrittenYaml
 
 
 def generate_launch_description():
+    rom_robot_name = os.environ.get('ROM_ROBOT_MODEL', 'rom2109')
     # Get the launch directory
-    bringup_dir = get_package_share_directory('rom2109_nav2')
+    bringup_dir = get_package_share_directory(f'{rom_robot_name}_nav2')
 
     namespace = LaunchConfiguration('namespace')
     use_sim_time = LaunchConfiguration('use_sim_time')
@@ -76,7 +77,7 @@ def generate_launch_description():
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
         'use_sim_time',
-        default_value='true',
+        default_value='False',
         description='Use simulation (Gazebo) clock if true')
 
     declare_params_file_cmd = DeclareLaunchArgument(
@@ -85,11 +86,11 @@ def generate_launch_description():
         description='Full path to the ROS2 parameters file to use for all launched nodes')
 
     declare_autostart_cmd = DeclareLaunchArgument(
-        'autostart', default_value='true',
+        'autostart', default_value='True',
         description='Automatically startup the nav2 stack')
 
     declare_use_composition_cmd = DeclareLaunchArgument(
-        'use_composition', default_value='False',
+        'use_composition', default_value='True',
         description='Use composed bringup if True')
 
     # declare_container_name_cmd = DeclareLaunchArgument(
@@ -251,7 +252,7 @@ def generate_launch_description():
                 plugin='nav2_collision_monitor::CollisionMonitor',
                 name='collision_monitor',
                 parameters=[configured_params],
-                remappings=remapping+ [('cmd_vel', 'cmd_vel_smoother_to_collision'), ('cmd_vel', 'cmd_vel_collision_to_diff_cont')]),
+                remappings=remapping+ [('cmd_vel', 'cmd_vel_smoother_to_collision'), ('cmd_vel', 'cmd_vel_collision_to_twist')]),
             ComposableNode(
                 package='nav2_lifecycle_manager',
                 plugin='nav2_lifecycle_manager::LifecycleManager',

@@ -9,13 +9,14 @@ import launch.actions
 from launch.actions import DeclareLaunchArgument
 
 def generate_launch_description():
+    rom_robot_name = os.environ.get('ROM_ROBOT_MODEL', 'rom2109')
     return LaunchDescription([
         launch_ros.actions.Node(
             package='robot_localization',
             executable='ekf_node',
             name='ekf_filter_node',
             output='screen',
-            parameters=[os.path.join(get_package_share_directory("rom2109_ekf"), 'config', 'ekf.yaml')],
+            parameters=[os.path.join(get_package_share_directory(f'{rom_robot_name}_ekf'), 'config', 'ekf.yaml')],
             remappings=[('cmd_vel', 'diff_controller/cmd_vel_unstamped'),('odometry/filtered' , 'odom')],
            ),
 

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(rom2109_bringup)
+project(rom2109_switch)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -23,24 +23,12 @@ if(BUILD_TESTING)
 endif()
 
 
-add_executable(mapping src/mapping.cpp)
-ament_target_dependencies(mapping rclcpp std_msgs)
-
-add_executable(nav2 src/nav.cpp)
-ament_target_dependencies(nav2 rclcpp std_msgs)
-
-add_executable(remapping src/remapping.cpp)
-ament_target_dependencies(remapping rclcpp std_msgs)
-
-add_executable(trigger src/trigger.cpp)
-ament_target_dependencies(trigger rclcpp std_msgs)
+add_executable(first_time_trigger src/first_time_trigger.cpp)
+ament_target_dependencies(first_time_trigger rclcpp std_msgs)
 
 
 install(TARGETS
-  mapping
-  nav2
-  remapping
-  trigger
+  first_time_trigger
   DESTINATION lib/${PROJECT_NAME})
 
 
@@ -54,10 +42,8 @@ install(
 
 # Install Python executables
 install(PROGRAMS
-
   scripts/tk.py
   scripts/switch_mode.py
-  # launch/mapping.launch.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

@@ -19,11 +19,19 @@ windows:
       root: ~/
       panes:
         - clear; source ~/.bashrc; ros2 launch ${ROM_ROBOT_MODEL}_ekf ekf.launch.py publish_tf:=True use_sim_time:=False
-  - Navigation: 
+  - Switch: 
       root: ~/
       panes:
-        - clear; source ~/.bashrc; sleep 3; ros2 launch ${ROM_ROBOT_MODEL}_nav2 mapping.launch.py map_subscribe_transient_local:=true use_slamtoolbox:=False
+        - clear; source ~/.bashrc; sleep 3; ros2 launch ${ROM_ROBOT_MODEL}_switch switch_mode.launch.py
   - JoyStick: 
       root: ~/
       panes:
         - clear; source ~/.bashrc; ros2 launch rom_robotics_joy joystick.launch.py
+  - Web: 
+      root: ~/
+      panes:
+        - clear; source ~/.bashrc; ros2 launch vizanti_server vizanti_server.launch.py
+  - RosBridgeServer: 
+      root: ~/
+      panes:
+        - clear; source ~/.bashrc; ros2 launch rosbridge_server rosbridge_websocket_launch.xml port:=9090 websocket_options:="--cors *"

@@ -11,20 +11,21 @@ from launch.conditions import IfCondition
 
 
 def generate_launch_description():
+    rom_robot_name = os.environ.get('ROM_ROBOT_MODEL', 'rom2109')
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
     use_rviz     = LaunchConfiguration('use_rviz', default='false')
 
-    rom2109_carto_pkg = get_package_share_directory('rom2109_carto')
+    carto_pkg = get_package_share_directory(f'{rom_robot_name}_carto')
     cartographer_config_dir = LaunchConfiguration('cartographer_config_dir', default=os.path.join(
-                                                  rom2109_carto_pkg, 'config'))
+                                                  carto_pkg, 'config'))
     configuration_basename = LaunchConfiguration('configuration_basename',
-                                                 default='rom2109_map_2d.lua')
+                                                 default='rom_map_2d.lua')
 
     resolution = LaunchConfiguration('resolution', default='0.05')
     publish_period_sec = LaunchConfiguration('publish_period_sec', default='1.0')
 
-    rviz_config_dir = os.path.join(get_package_share_directory('rom2109_carto'),
-                                   'rviz', 'rom2109_cartographer.rviz')
+    rviz_config_dir = os.path.join(get_package_share_directory(f'{rom_robot_name}_carto'),
+                                   'rviz', 'cartographer.rviz')
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -37,7 +38,7 @@ def generate_launch_description():
             description='Name of lua file for cartographer'),
         DeclareLaunchArgument(
             'use_sim_time',
-            default_value='true',
+            default_value='False',
             description='Use simulation (Gazebo) clock if true'),
 
         Node(
@@ -47,7 +48,7 @@ def generate_launch_description():
             #output='screen',
             parameters=[{'use_sim_time': use_sim_time}],
             # remappings=[('/odom', '/diff_controller/odom')],
-            arguments=['-configuration_directory', '/ros2_ws/src/developer_packages/rom2109_carto/config',
+            arguments=['-configuration_directory', cartographer_config_dir,
                        '-configuration_basename', configuration_basename],
             ),
 

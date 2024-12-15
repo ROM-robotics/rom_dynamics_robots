@@ -8,27 +8,26 @@ from launch.actions import RegisterEventHandler,  TimerAction
 
 
 def generate_launch_description():
-
-    nav2_pkg = get_package_share_directory('rom2109_nav2')
+    rom_robot_name = os.environ.get('ROM_ROBOT_MODEL', 'rom2109')
 
     switch_node = Node(
         name="switch",
-        package="rom2109_bringup",
+        package=f'{rom_robot_name}_switch',
         executable="switch_mode.py",
         output='screen',
     )
 
     tk_node = Node(
-        package='rom2109_bringup',
+        package=f'{rom_robot_name}_switch',
         executable='tk.py',
         name='tk',
         output='screen',
     )
 
     trigger_node = Node(
-        package='rom2109_bringup',
-        executable='trigger',
-        name='trigger_node',
+        package=f'{rom_robot_name}_switch',
+        executable='first_time_trigger',
+        name='first_time_trigger_node',
         output='screen',
     )
 
@@ -40,24 +39,16 @@ def generate_launch_description():
         )
     )
 
-     # Delay start of trigger_node after `tk_node`
-    delay_trigger_node = RegisterEventHandler(
-        event_handler=OnProcessStart(
-            target_action=switch_node,
-            on_start=[trigger_node],
-        )
-    )
     delayed_trigger_time_node = TimerAction(
-        period=7.0,  # Delay in seconds
+        period=3.0,  # Delay in seconds
         actions=[trigger_node]
     )
 
     return LaunchDescription(
         [
-           switch_node,
+            switch_node,
             delay_tk_node,
-           #delay_trigger_node,
-           delayed_trigger_time_node,
+            delayed_trigger_time_node,
         ]
     )
 

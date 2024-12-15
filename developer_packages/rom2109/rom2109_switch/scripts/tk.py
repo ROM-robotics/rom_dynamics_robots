@@ -9,7 +9,7 @@ from threading import Thread
 class ROS2Publisher(Node):
     def __init__(self):
         super().__init__('ros2_switch_publisher')
-        self.publisher_ = self.create_publisher(String, 'output_topic', 10)
+        self.publisher_ = self.create_publisher(String, 'switch_mode', 10)
         self.get_logger().info('ROS 2 node started, ready to publish messages.')
 
     def publish_message(self, mode):

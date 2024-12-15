@@ -9,13 +9,13 @@ from launch.substitutions import LaunchConfiguration
 from launch.conditions import IfCondition, UnlessCondition
 
 def generate_launch_description():
-
+    rom_robot_name = os.environ.get('ROM_ROBOT_MODEL', 'rom2109')
     use_composition = LaunchConfiguration('use_composition')
     use_slamtoolbox = LaunchConfiguration('use_slamtoolbox')
     use_sim_time = LaunchConfiguration('use_sim_time')
 
     declare_use_composition_cmd = DeclareLaunchArgument(
-        'use_composition', default_value='False',
+        'use_composition', default_value='True',
         description='Use composed bringup if True')
     
     declare_use_slamtoolbox_cmd = DeclareLaunchArgument(
@@ -30,7 +30,7 @@ def generate_launch_description():
         package='nav2_map_server',
         executable='map_server',
         arguments=[
-            "yaml_filename",os.path.join(get_package_share_directory('rom2109_nav2'), 'maps', 'maze1.yaml')
+            "yaml_filename",os.path.join(get_package_share_directory(f'{rom_robot_name}_nav2'), 'maps', 'maze1.yaml')
             ],
     )
 
@@ -43,14 +43,14 @@ def generate_launch_description():
 
     carto_localization = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(
-            get_package_share_directory("rom2109_carto"), "launch", "cartographer_localization.launch.py"
+            get_package_share_directory(f'{rom_robot_name}_carto'), "launch", "cartographer_localization.launch.py"
             )), condition=UnlessCondition(LaunchConfiguration('use_slamtoolbox')),
             launch_arguments={'use_sim_time': use_sim_time}.items() 
     )
 
     slamtoolbox_localization = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(
-            get_package_share_directory("rom2109_nav2"), "launch", "slamtb_online_async_localization.launch.py"
+            get_package_share_directory(f'{rom_robot_name}_nav2'), "launch", "slamtb_online_async_localization.launch.py"
             )), condition=IfCondition(LaunchConfiguration('use_slamtoolbox')),
             launch_arguments={'use_sim_time': use_sim_time}.items() 
     )
@@ -58,7 +58,7 @@ def generate_launch_description():
     # composable true လုပ်ရန် 
     sim_navigation = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory("rom2109_nav2"),"launch","sim_navigation.launch.py"
+            get_package_share_directory(f'{rom_robot_name}_nav2'),"launch","hw_navigation.launch.py"
             )]), launch_arguments={'use_composition': use_composition}.items()
     )
 

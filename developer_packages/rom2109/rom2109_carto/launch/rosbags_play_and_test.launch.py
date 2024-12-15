@@ -9,7 +9,7 @@ from launch.substitutions import LaunchConfiguration
 from launch.conditions import IfCondition, UnlessCondition
 
 def generate_launch_description():
-
+    rom_robot_name = os.environ.get('ROM_ROBOT_MODEL', 'rom2109')
     use_composition = LaunchConfiguration('use_composition')
     use_slamtoolbox = LaunchConfiguration('use_slamtoolbox')
     use_sim_time = LaunchConfiguration('use_sim_time')
@@ -23,27 +23,27 @@ def generate_launch_description():
         description='Use use_slamtoolbox if True')
     
     declare_use_sim_time_cmd = DeclareLaunchArgument(
-        'use_sim_time', default_value='True',
+        'use_sim_time', default_value='False',
         description='Use use_sim_time if True')
 
     carto_slam = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(
-            get_package_share_directory("rom2109_carto"), "launch", "cartographer_mapping.launch.py"
+            get_package_share_directory(f'{rom_robot_name}_carto'), "launch", "cartographer_mapping.launch.py"
             )), condition=UnlessCondition(LaunchConfiguration('use_slamtoolbox')),
             launch_arguments={'use_sim_time': use_sim_time}.items() 
     )
 
     slamtoolbox_slam = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(
-            get_package_share_directory("rom2109_nav2"), "launch", "slamtb_online_async_mapping.launch.py"
+            get_package_share_directory(f'{rom_robot_name}_nav2'), "launch", "slamtb_online_async_mapping.launch.py"
             )), condition=IfCondition(LaunchConfiguration('use_slamtoolbox')),
             launch_arguments={'use_sim_time': use_sim_time}.items() 
     )
 
     # composable true လုပ်ရန် 
-    sim_navigation = IncludeLaunchDescription(
+    hw_navigation = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory("rom2109_nav2"),"launch","sim_mapping_navigation.launch.py"
+            get_package_share_directory(f'{rom_robot_name}_nav2'),"launch","hw_mapping_navigation.launch.py"
             )]), launch_arguments={'use_composition': use_composition}.items()
     )
     
@@ -60,7 +60,7 @@ def generate_launch_description():
             declare_use_sim_time_cmd,
             carto_slam,
             # slamtoolbox_slam,
-            # sim_navigation
+            # hw_navigation
         ]
     )
     

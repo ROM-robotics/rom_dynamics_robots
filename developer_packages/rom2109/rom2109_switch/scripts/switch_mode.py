@@ -15,17 +15,18 @@ class SwitchMode(Node):
         super().__init__('switch_mode')
         self.current_process = None
         self.current_mode = None  
+        rom_robot_name = os.environ.get('ROM_ROBOT_MODEL', 'rom2109')
 
-        description_pkg = get_package_share_directory('rom2109_nav2')
+        nav2_pkg = get_package_share_directory(f'{rom_robot_name}_nav2')
 
-        self.navigation_launch_file = os.path.join(description_pkg,'launch','navigation.launch.py')
-        self.cartographer_launch_file = os.path.join(description_pkg,'launch','mapping.launch.py')
-        self.remapping_launch_file = os.path.join(description_pkg,'launch','remapping.launch.py')
+        self.navigation_launch_file   = os.path.join( nav2_pkg, 'launch', 'navigation.launch.py')
+        self.cartographer_launch_file = os.path.join( nav2_pkg, 'launch', 'mapping.launch.py')
+        self.remapping_launch_file    = os.path.join( nav2_pkg, 'launch', 'mapping.launch.py')
 
         # Create a subscriber
         self.subscription = self.create_subscription(
             String,
-            'output_topic',
+            'switch_mode',
             self.mode_callback,
             10
         )

@@ -13,7 +13,7 @@ int main(int argc, char * argv[])
   auto node = rclcpp::Node::make_shared("trigger_node");
 
   
-  auto publisher = node->create_publisher<std_msgs::msg::String>("/output_topic", 10);
+  auto publisher = node->create_publisher<std_msgs::msg::String>("/switch_mode", 10);
   while (rclcpp::ok() && publisher->get_subscription_count() == 0) {
     
     std::this_thread::sleep_for(500ms);

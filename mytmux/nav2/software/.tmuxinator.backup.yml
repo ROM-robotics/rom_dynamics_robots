@@ -20,12 +20,16 @@ windows:
   - Switch: 
       root: ~/
       panes:
-        - clear; sleep 7; gnome-terminal -- bash -c "source ~/.bashrc; ros2 launch bobo_bringup switch_mode.launch.py; exec bash"
+        - clear; sleep 7; gnome-terminal -- bash -c "source ~/.bashrc; ros2 launch bobo_switch switch_mode.launch.py; exec bash"
   - TwistKeyboard: 
       root: ~/
       panes:
         - clear; source ~/.bashrc; ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap /cmd_vel:=/cmd_vel_keyboard
-  - Web: 
+  - RosBridgeServer: 
       root: ~/
       panes:
-        - clear; source ~/.bashrc; ros2 launch vizanti_server vizanti_server.launch.py
+        - clear; source ~/.bashrc; ros2 launch rosbridge_server rosbridge_websocket_launch.xml
+  # - Web: 
+  #     root: ~/
+  #     panes:
+  #       - clear; source ~/.bashrc; ros2 launch vizanti_server vizanti_server.launch.py

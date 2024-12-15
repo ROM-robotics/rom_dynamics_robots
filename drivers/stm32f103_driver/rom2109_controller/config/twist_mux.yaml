@@ -13,3 +13,7 @@ twist_mux:
         topic: cmd_vel_joy_to_twist # behavior tree
         timeout: 0.5
         priority: 100
+      web:
+        topic: cmd_vel_web_to_twist # behavior tree
+        timeout: 0.5
+        priority: 100

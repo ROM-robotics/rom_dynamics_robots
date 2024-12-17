@@ -34,6 +34,7 @@ static void SensorDataUpdate(uint32_t uiReg, uint32_t uiRegNum);
 static void Delayms(uint16_t ucMs);
 int main(int argc, char *argv[])
 {
+    char deviceName[256] = "/dev/ttyS4";
     char deviceName[256] = "/dev/IMUCOM";
     // strncpy(deviceName, "/dev/ttyUSB0", sizeof(deviceName) - 1);
     // deviceName[sizeof(deviceName) - 1] = '\0';
@@ -52,6 +53,7 @@ int main(int argc, char *argv[])
     // Initialize WIT-Motion sensor
     WitInit(WIT_PROTOCOL_NORMAL, 0x50);
     RCLCPP_INFO(rclcpp::get_logger("string"), "Status %i .", WitRegisterCallBack(SensorDataUpdate));
+    AutoScanSensor("/dev/ttyS4");
     AutoScanSensor("/dev/IMUCOM");
     rclcpp::init(argc, argv);
     std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("simple_publisher");

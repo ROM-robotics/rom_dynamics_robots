@@ -143,6 +143,7 @@ def generate_launch_description():
         twist_mux_node,
         delay_rviz_after_joint_state_broadcaster_spawner,
         rplidar_launch,
+        imu_node,
     ]
 
     return LaunchDescription(nodes)

@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     AutoScanSensor("/dev/IMUCOM");
     rclcpp::init(argc, argv);
     std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("simple_publisher");
-    publisher_ = node->create_publisher<std_msgs::msg::String>("topic", 10);
+    publisher_ = node->create_publisher<std_msgs::msg::String>("/imu/out", 10);
     // timer_ = node->create_wall_timer(500ms, timer_callback);
     while (true)
     {

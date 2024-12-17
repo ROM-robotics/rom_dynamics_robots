@@ -14,7 +14,7 @@ windows:
   - Hardware: 
       root: ~/
       panes:
-        - clear; source ~/.bashrc; ros2 launch ${ROM_ROBOT_MODEL}_controller hardware.launch.py odom_tf:=False use_rviz:=False use_lidar:=True
+        - clear; source ~/.bashrc; ros2 launch ${ROM_ROBOT_MODEL}_controller hardware.launch.py odom_tf:=False use_rviz:=False use_lidar:=True use_imu:=True
   - EKF: 
       root: ~/
       panes:

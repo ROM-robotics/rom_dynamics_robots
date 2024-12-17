@@ -13,6 +13,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 def generate_launch_description():
     rom_robot_name = os.environ.get('ROM_ROBOT_MODEL', 'rom2109')
     use_lidar = LaunchConfiguration('use_lidar')
+    use_lidar = LaunchConfiguration('use_imu')
     # Get URDF via xacro
     robot_description_content = Command(
         [
@@ -123,8 +124,16 @@ def generate_launch_description():
         condition=IfCondition(use_lidar)
     )
 
+    imu_node = Node(
+        package="wit_motion_imu_publisher",
+        executable="imu",
+        name="imu",
+        condition=IfCondition(LaunchConfiguration('use_imu'))
+    )
+
     nodes = [
         DeclareLaunchArgument('use_lidar', default_value='false', description='Use lidar or Not.'),
+        DeclareLaunchArgument('use_imu', default_value='false', description='Use imu or Not.'),
         control_node,
         sed_command_false,
         sed_command_true,

@@ -27,3 +27,7 @@ windows:
       root: ~/
       panes:
         - clear; source ~/.bashrc; ros2 launch rom_robotics_joy joystick.launch.py
+  - Debug: 
+      root: ~/
+      panes:
+        - clear; source ~/.bashrc;

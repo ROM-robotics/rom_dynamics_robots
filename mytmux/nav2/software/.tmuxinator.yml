@@ -30,4 +30,12 @@ windows:
   - RosBridgeServer: 
       root: ~/
       panes:
+        - clear; source ~/.bashrc; cd /home/mr_robot/devel_ws/src/rom2109/funviz; npm start
+  - RosBridgeServer: 
+      root: ~/
+      panes:
         - clear; source ~/.bashrc; ros2 launch rosbridge_server rosbridge_websocket_launch.xml
+  - Debug: 
+      root: ~/
+      panes:
+        - clear; source ~/.bashrc;

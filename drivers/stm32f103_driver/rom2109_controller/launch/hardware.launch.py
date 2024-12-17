@@ -9,9 +9,10 @@ from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration
-
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 def generate_launch_description():
     rom_robot_name = os.environ.get('ROM_ROBOT_MODEL', 'rom2109')
+    use_lidar = LaunchConfiguration('use_lidar')
     # Get URDF via xacro
     robot_description_content = Command(
         [
@@ -77,6 +78,7 @@ def generate_launch_description():
         name="rviz2",
         output="log",
         arguments=["-d", rviz_config_file],
+        condition=IfCondition(LaunchConfiguration('use_rviz'))
     )
 
     joint_state_broadcaster_spawner = Node(
@@ -115,7 +117,14 @@ def generate_launch_description():
         remappings=[('/cmd_vel_out', '/diff_controller/cmd_vel_unstamped')]
     )
 
+    rplidar_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(get_package_share_directory(f'{rom_robot_name}_controller'), 'launch', 'rplidar.launch.py')]),
+        launch_arguments={'use_lidar': use_lidar}.items(),
+        condition=IfCondition(use_lidar)
+    )
+
     nodes = [
+        DeclareLaunchArgument('use_lidar', default_value='false', description='Use lidar or Not.'),
         control_node,
         sed_command_false,
         sed_command_true,
@@ -123,7 +132,8 @@ def generate_launch_description():
         joint_state_broadcaster_spawner,
         delay_base_controller_spawner_after_joint_state_broadcaster_spawner,
         twist_mux_node,
-        # delay_rviz_after_joint_state_broadcaster_spawner,--
+        delay_rviz_after_joint_state_broadcaster_spawner,
+        rplidar_launch,
     ]
 
     return LaunchDescription(nodes)

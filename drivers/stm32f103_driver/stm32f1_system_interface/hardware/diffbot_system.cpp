@@ -213,8 +213,8 @@ hardware_interface::return_type stm32f1_system_interface ::DiffDriveStm32Hardwar
 // radian per second  to rpm conversion
   int right_rpm = rds_to_rpm_constant*wheel_r_.cmd;
   int left_rpm = rds_to_rpm_constant*wheel_l_.cmd;
-  RCLCPP_INFO(rclcpp::get_logger("\033[1;36m1 meter test"), "right wheel rpm : %d", right_rpm);
-  RCLCPP_INFO(rclcpp::get_logger("\033[1;35m1 meter test"), "left rpm : %d", left_rpm);
+  //RCLCPP_INFO(rclcpp::get_logger("\033[1;36m1 meter test"), "right wheel rpm : %d", right_rpm);
+  //RCLCPP_INFO(rclcpp::get_logger("\033[1;35m1 meter test"), "left rpm : %d", left_rpm);
   comms_.set_motor_values(left_rpm, right_rpm);
   return hardware_interface::return_type::OK;
 }

@@ -12,9 +12,9 @@ from launch_ros.substitutions import FindPackageShare
 import xacro
 
 def generate_launch_description():
-    
+    rom_robot_name = os.environ.get('ROM_ROBOT_MODEL', 'rom2109')
     rviz_config_file = PathJoinSubstitution(
-        [FindPackageShare("rom2109_controller"), "rviz", "scan.rviz"]
+        [FindPackageShare(f'{rom_robot_name}_controller'), "rviz", "scan.rviz"]
     )
 
     rviz_node = Node(

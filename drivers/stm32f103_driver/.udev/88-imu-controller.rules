@@ -1,0 +1,2 @@
+# ROM_DYNAMICS'S Product ID = 12345, Vendor Id = 12345
+KERNEL=="ttyUSB*", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", ATTRS{bcdDevice}=="8132", MODE:="0777", SYMLINK+="IMUCOM"

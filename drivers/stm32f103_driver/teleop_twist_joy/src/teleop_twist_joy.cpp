@@ -341,8 +341,12 @@ void TeleopTwistJoy::Impl::sendCmdVelMsg(const sensor_msgs::msg::Joy::SharedPtr 
   // Initializes with zeros by default.
   auto cmd_vel_msg = std::make_unique<geometry_msgs::msg::Twist>();
   if(joy_msg->axes[1] > 0 || joy_msg->axes[7] > 0) { cmd_vel_msg->linear.x = linear_speed; }
-  if(joy_msg->axes[2] > 0 || joy_msg->axes[6] > 0) { cmd_vel_msg->angular.z = angular_speed; }
-  if(joy_msg->axes[2] < 0 || joy_msg->axes[6] < 0) { cmd_vel_msg->angular.z = -angular_speed; }
+  else if (joy_msg->axes[1] == 0 || joy_msg->axes[7] == 0) { cmd_vel_msg->linear.x = 0.000; }
+
+  if(joy_msg->axes[6] > 0) { cmd_vel_msg->angular.z =angular_speed; }
+  else if(joy_msg->axes[6] < 0) { cmd_vel_msg->angular.z = -angular_speed; }
+  else if(joy_msg->axes[6] == 0){ cmd_vel_msg->angular.z = 0.000; }
+
   //cmd_vel_msg->linear.x = getVal(joy_msg, axis_linear_map, scale_linear_map[which_map], "x");
   //cmd_vel_msg->linear.y = getVal(joy_msg, axis_linear_map, scale_linear_map[which_map], "y");
   //cmd_vel_msg->linear.z = getVal(joy_msg, axis_linear_map, scale_linear_map[which_map], "z");

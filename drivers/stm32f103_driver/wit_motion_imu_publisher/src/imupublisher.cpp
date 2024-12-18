@@ -6,6 +6,10 @@
 #include <iostream>
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
+#include <sensor_msgs/msg/imu.hpp>
+#include <tf2/LinearMath/Quaternion.h>
+#include <geometry_msgs/msg/quaternion.hpp>
+
 
 extern "C"
 {
@@ -26,7 +30,7 @@ float fAcc[3], fGyro[3], fAngle[3];
 unsigned char cBuff[1];
 const int c_uiBaud[] = {2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600};
 using namespace std::chrono_literals;
-std::shared_ptr<rclcpp::Publisher<std_msgs::msg::String>> publisher_;
+std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::Imu>> publisher_;
 std::shared_ptr<rclcpp::TimerBase> timer_;
 
 static void AutoScanSensor(const std::string &dev);
@@ -57,8 +61,14 @@ int main(int argc, char *argv[])
     //AutoScanSensor("/dev/IMUCOM");
     rclcpp::init(argc, argv);
     std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("simple_publisher");
-    publisher_ = node->create_publisher<std_msgs::msg::String>("/imu/out", 10);
+    publisher_ = node->create_publisher<sensor_msgs::msg::Imu>("/imu/out", 10);
     // timer_ = node->create_wall_timer(500ms, timer_callback);
+
+    sensor_msgs::msg::Imu imu_msg = {};
+    imu_msg.header.stamp = rclcpp::Clock().now();
+    std_msgs::msg::String msg;
+
+    imu_msg.header.frame_id = "imu";
     while (true)
     {
         while (serial_read_data(fd, cBuff, 1))
@@ -75,7 +85,7 @@ int main(int argc, char *argv[])
                 fGyro[i] = sReg[GX + i] / 32768.0f * 2000.0f;
                 fAngle[i] = sReg[Roll + i] / 32768.0f * 180.0f;
             }
-            std_msgs::msg::String msg;
+            
 
             // Extract and format sensor data
             if (s_cDataUpdate & ACC_UPDATE)
@@ -102,9 +112,20 @@ int main(int argc, char *argv[])
                 msg.data += std::to_string(sReg[HX]) + " " + std::to_string(sReg[HY]) + " " + std::to_string(sReg[HZ]) + "\n";
                 s_cDataUpdate &= ~MAG_UPDATE;
             }
+            double yaw_rad = (fAngle[2]) * (M_PI / 180.0);
+            tf2::Quaternion quaternion;
+                quaternion.setRPY(0.0, 0.0, yaw_rad);  // Roll = 0, Pitch = 0, Yaw = your_value
+                quaternion.normalize();
+            imu_msg.header.stamp = rclcpp::Clock().now();
+            imu_msg.orientation.x = quaternion.x();
+            imu_msg.orientation.y = quaternion.y();
+            imu_msg.orientation.z = quaternion.z();
+            imu_msg.orientation.w = quaternion.w();
+
+            // to add velocity
 
             RCLCPP_INFO(rclcpp::get_logger("string"), "Publishing: '%s'", msg.data.c_str());
-            publisher_->publish(msg);
+            publisher_->publish(imu_msg);
         }
     }
 

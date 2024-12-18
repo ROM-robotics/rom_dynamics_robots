@@ -9,6 +9,9 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(tf2 REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -23,7 +26,7 @@ if(BUILD_TESTING)
 endif()
 
 add_executable(imu src/imupublisher.cpp src/serial.c src/wit_c_sdk.c)
-ament_target_dependencies(imu rclcpp std_msgs)
+ament_target_dependencies(imu rclcpp std_msgs sensor_msgs geometry_msgs tf2)
 
 install(TARGETS 
   imu 

@@ -131,6 +131,16 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('use_imu'))
     )
 
+    static_tf_pub = Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='static_tf_pub',
+            condition=IfCondition(LaunchConfiguration('use_imu'))
+            arguments=['0.000062039', '0.000055952', '0.004',    # Translation: x=1.0, y=2.0, z=0.0
+                       '0.0', '0.0', '0.0', '1.0',  # Rotation: Quaternion (qx, qy, qz, qw)
+                       'base_footprint', 'imu'],  # Parent frame and child frame
+        )
+
     nodes = [
         DeclareLaunchArgument('use_lidar', default_value='false', description='Use lidar or Not.'),
         DeclareLaunchArgument('use_imu', default_value='false', description='Use imu or Not.'),
@@ -144,6 +154,7 @@ def generate_launch_description():
         delay_rviz_after_joint_state_broadcaster_spawner,
         rplidar_launch,
         imu_node,
+        static_tf_pub,
     ]
 
     return LaunchDescription(nodes)

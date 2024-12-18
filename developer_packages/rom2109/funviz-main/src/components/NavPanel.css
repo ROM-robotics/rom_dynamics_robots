@@ -1,0 +1,40 @@
+.nav-panel {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+  }
+  
+  .nav-panel ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+  
+  .nav-panel li {
+    display: inline;
+  }
+  
+  .nav-panel a {
+    text-decoration: none;
+    color: white;
+  }
+  
+  .nav-panel a:hover {
+    text-decoration: underline;
+  }
+  
+  .nav-panel button {
+    padding: 5px 10px;
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .nav-panel button:hover {
+    background-color: #777;
+  }
+  

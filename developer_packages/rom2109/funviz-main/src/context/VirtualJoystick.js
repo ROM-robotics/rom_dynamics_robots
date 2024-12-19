@@ -14,7 +14,7 @@ const VirtualJoystick = ({ rosUrl = "ws://localhost:7070" }) => {
     // Set up the cmd_vel topic publisher
     cmdVelTopic.current = new ROSLIB.Topic({
       ros: ros.current,
-      name: "cmd_vel_web_to_twist",
+      name: "cmd_vel_joy_to_twist",
       messageType: "geometry_msgs/msg/Twist",
     });
 

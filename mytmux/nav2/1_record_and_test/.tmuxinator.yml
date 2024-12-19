@@ -20,7 +20,7 @@ windows:
   - Navigation: 
       root: ~/
       panes:
-        - clear; source ~/.bashrc; sleep 3; ros2 launch ${ROM_ROBOT_MODEL}_nav2 mapping.launch.py map_subscribe_transient_local:=true use_slamtoolbox:=False
+        - clear; source ~/.bashrc; sleep 3; #ros2 launch ${ROM_ROBOT_MODEL}_nav2 mapping.launch.py map_subscribe_transient_local:=true use_slamtoolbox:=False
   - JoyStick: 
       root: ~/
       panes:

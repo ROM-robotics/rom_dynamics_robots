@@ -9,7 +9,7 @@ const NavPanel = () => {
   useEffect(() => {
     // Connect to the ROS WebSocket server
     const rosConnection = new ROSLIB.Ros({
-      url: "ws://localhost:9090", // Update with your ROS WebSocket URL
+      url: "ws://localhost:7070", // Update with your ROS WebSocket URL
     });
 
     rosConnection.on("connection", () => {

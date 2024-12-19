@@ -27,14 +27,14 @@ windows:
       root: ~/
       panes:
         - clear; source ~/.bashrc; ros2 launch rom_robotics_joy joystick.launch.py
+  - Npm: 
+      root: ~/
+      panes:
+        - clear; source ~/.bashrc; cd /home/mr_robot/devel_ws/src/rom2109/funviz-main; npm start
   - RosBridgeServer: 
       root: ~/
       panes:
-        - clear; source ~/.bashrc; cd /home/mr_robot/devel_ws/src/rom2109/funviz; npm start
-  - RosBridgeServer: 
-      root: ~/
-      panes:
-        - clear; source ~/.bashrc; ros2 launch rosbridge_server rosbridge_websocket_launch.xml
+        - clear; source ~/.bashrc; ros2 launch rosbridge_server rosbridge_websocket_launch.xml port:=7070
   - Debug: 
       root: ~/
       panes:

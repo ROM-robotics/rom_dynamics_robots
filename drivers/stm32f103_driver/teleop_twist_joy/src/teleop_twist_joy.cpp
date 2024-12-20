@@ -340,8 +340,8 @@ void TeleopTwistJoy::Impl::sendCmdVelMsg(const sensor_msgs::msg::Joy::SharedPtr 
 {
   // Initializes with zeros by default.
   auto cmd_vel_msg = std::make_unique<geometry_msgs::msg::Twist>();
-  if(joy_msg->axes[1] > 0 || joy_msg->axes[7] > 0) { cmd_vel_msg->linear.x = linear_speed; }
-  else if (joy_msg->axes[1] == 0 || joy_msg->axes[7] == 0) { cmd_vel_msg->linear.x = 0.000; }
+  if(joy_msg->axes[7] > 0) { cmd_vel_msg->linear.x = linear_speed; }
+  else if (joy_msg->axes[7] == 0) { cmd_vel_msg->linear.x = 0.000; }
 
   if(joy_msg->axes[6] > 0) { cmd_vel_msg->angular.z =angular_speed; }
   else if(joy_msg->axes[6] < 0) { cmd_vel_msg->angular.z = -angular_speed; }

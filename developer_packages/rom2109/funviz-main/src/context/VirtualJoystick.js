@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import nipplejs from "nipplejs";
 import ROSLIB from "roslib";
 
-const VirtualJoystick = ({ rosUrl = "ws://localhost:7070" }) => {
+const VirtualJoystick = ({ rosUrl = "ws://192.168.1.10:7070" }) => {
   const joystickRef = useRef();
   const ros = useRef(null);
   const cmdVelTopic = useRef(null);

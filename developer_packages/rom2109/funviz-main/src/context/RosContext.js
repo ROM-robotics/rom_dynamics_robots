@@ -9,7 +9,7 @@ export const RosProvider = ({ children }) => {
 
   useEffect(() => {
     const rosInstance = new ROSLIB.Ros({
-      url: "ws://localhost:7070", // WebSocket server address
+      url: "ws://192.168.1.10:7070", // WebSocket server address
     });
 
     rosInstance.on("connection", () => {

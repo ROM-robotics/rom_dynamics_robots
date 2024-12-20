@@ -28,11 +28,15 @@ windows:
   - ROSBag: 
       root: /mytmux/bags
       panes:
-        - clear; source ~/.bashrc; sleep 10; ros2 bag record -o office_data_$(rom_date) /clock /scan /tf /tf_static /imu/out /odom
+        - clear; source ~/.bashrc; sleep 10; ros2 bag record -o office_data_$(rom_date) /clock /scan /tf /tf_static /imu/out /odom 
+  - Npm: 
+      root: ~/
+      panes:
+        - clear; source ~/.bashrc; cd /home/mr_robot/devel_ws/src/rom2109/funviz-main; npm start
   - RosBridgeServer: 
       root: ~/
       panes:
-        - clear; source ~/.bashrc; ros2 launch vizanti_server vizanti_server.launch.py
+        - clear; source ~/.bashrc; ros2 launch rosbridge_server rosbridge_websocket_launch.xml port:=7070
   - Debug: 
       root: ~/
       panes:

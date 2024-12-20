@@ -12,7 +12,7 @@ windows:
   - Cartographer: 
       root: ~/
       panes:
-        - clear; source ~/.bashrc; sleep 2; ros2 launch bobo_carto rosbags_play_and_test.launch.py map_subscribe_transient_local:=true use_slamtoolbox:=False
+        - clear; source ~/.bashrc; sleep 2; ros2 launch rom2109_carto rosbags_play_and_test.launch.py map_subscribe_transient_local:=true use_slamtoolbox:=False
   - Rviz2: 
       root: ~/
       panes:
@@ -20,7 +20,7 @@ windows:
   - ROSBag: 
       root: /mytmux/bags
       panes:
-        - clear; source ~/.bashrc; ros2 bag play /mytmux/bags/five_rooms_v0.5_w0.3_data
+        - clear; source ~/.bashrc; ros2 bag play /home/mr_robot/office_data_887
 
 
 

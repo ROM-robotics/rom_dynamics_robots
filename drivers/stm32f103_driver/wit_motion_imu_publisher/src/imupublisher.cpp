@@ -4,13 +4,12 @@
 #include <cstdint>
 #include <unistd.h>
 #include <iostream>
+
+#include "geometry_msgs/msg/transform_stamped.hpp"
+#include "tf2/LinearMath/Quaternion.h"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
-#include <sensor_msgs/msg/imu.hpp>
-#include <tf2/LinearMath/Quaternion.h>
-#include <geometry_msgs/msg/quaternion.hpp>
-
-
+#include "sensor_msgs/msg/imu.hpp"
 extern "C"
 {
 #include "serial.h"
@@ -22,30 +21,28 @@ extern "C"
 #define ANGLE_UPDATE 0x04
 #define MAG_UPDATE 0x08
 #define READ_UPDATE 0x80
-sensor_msgs::msg::Imu imu_msg = {};
-    
-    std_msgs::msg::String msg;
+
 static int fd, s_iCurBaud = 9600;
 static volatile char s_cDataUpdate = 0;
-static volatile double yaw_rad;
+
 float fAcc[3], fGyro[3], fAngle[3];
 unsigned char cBuff[1];
 const int c_uiBaud[] = {2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600};
 using namespace std::chrono_literals;
-std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::Imu>> publisher_;
+std::shared_ptr<rclcpp::Publisher<std_msgs::msg::String>> publisher_;
+std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::Imu>> imu_pub_;
 std::shared_ptr<rclcpp::TimerBase> timer_;
-static void timer_callback();
+
 static void AutoScanSensor(const std::string &dev);
 static void SensorDataUpdate(uint32_t uiReg, uint32_t uiRegNum);
 static void Delayms(uint16_t ucMs);
 int main(int argc, char *argv[])
 {
     char deviceName[256] = "/dev/ttyS4";
-    //char deviceName[256] = "/dev/IMUCOM";
-    // strncpy(deviceName, "/dev/ttyUSB0", sizeof(deviceName) - 1);
+    // strncpy(deviceName, "/dev/ttyS4", sizeof(deviceName) - 1);
     // deviceName[sizeof(deviceName) - 1] = '\0';
 
-    if ((fd = serial_open(deviceName, 115200)) < 0)
+    if ((fd = serial_open(deviceName, 9600)) < 0)
     {
         RCLCPP_ERROR(rclcpp::get_logger("string"), "Failed to open %s", deviceName);
         rclcpp::shutdown();
@@ -60,15 +57,11 @@ int main(int argc, char *argv[])
     WitInit(WIT_PROTOCOL_NORMAL, 0x50);
     RCLCPP_INFO(rclcpp::get_logger("string"), "Status %i .", WitRegisterCallBack(SensorDataUpdate));
     AutoScanSensor("/dev/ttyS4");
-    //AutoScanSensor("/dev/IMUCOM");
     rclcpp::init(argc, argv);
     std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("simple_publisher");
-    publisher_ = node->create_publisher<sensor_msgs::msg::Imu>("/imu/out", 10);
-    timer_ = node->create_wall_timer(500ms, timer_callback);
-
-    
-
-    imu_msg.header.frame_id = "imu";
+    // publisher_ = node->create_publisher<std_msgs::msg::String>("topic", 10);
+    imu_pub_ = node->create_publisher<sensor_msgs::msg::Imu>("imu/out", 10);
+    // timer_ = node->create_wall_timer(500ms, timer_callback);
     while (true)
     {
         while (serial_read_data(fd, cBuff, 1))
@@ -80,45 +73,27 @@ int main(int argc, char *argv[])
 
         if (s_cDataUpdate)
         {
-            for (int i = 0; i < 3; i++) {
-                fAcc[i] = sReg[AX + i] / 32768.0f * 16.0f;
-                fGyro[i] = sReg[GX + i] / 32768.0f * 2000.0f;
-                fAngle[i] = sReg[Roll + i] / 32768.0f * 180.0f;
-            }
-            
+            fAngle[2] = sReg[Roll + 2] * 0.00009587379924285257f; //32768.0f * PI;
 
-            // // Extract and format sensor data
-            // if (s_cDataUpdate & ACC_UPDATE)
-            // {
-            //     msg.data += "Acc: ";
-            //     msg.data += std::to_string(fAcc[0]) + " " + std::to_string(fAcc[1]) + " " + std::to_string(fAcc[2]) + "\n";
-            //     s_cDataUpdate &= ~ACC_UPDATE;
-            // }
-            // if (s_cDataUpdate & GYRO_UPDATE)
-            // {
-            //     msg.data += "Gyro: ";
-            //     msg.data += std::to_string(fGyro[0]) + " " + std::to_string(fGyro[1]) + " " + std::to_string(fGyro[2]) + "\n";
-            //     s_cDataUpdate &= ~GYRO_UPDATE;
-            // }
-            // if (s_cDataUpdate & ANGLE_UPDATE)
-            // {
-            //     msg.data += "Angle: ";
-            //     msg.data += std::to_string(fAngle[0]) + " " + std::to_string(fAngle[1]) + " " + std::to_string(fAngle[2]) + "\n";
-            //     s_cDataUpdate &= ~ANGLE_UPDATE;
-            // }
-            // if (s_cDataUpdate & MAG_UPDATE)
-            // {
-            //     msg.data += "Mag: ";
-            //     msg.data += std::to_string(sReg[HX]) + " " + std::to_string(sReg[HY]) + " " + std::to_string(sReg[HZ]) + "\n";
-            //     s_cDataUpdate &= ~MAG_UPDATE;
-            // }
-            
-            if (s_cDataUpdate & ANGLE_UPDATE){
-                yaw_rad = (fAngle[2]) * (M_PI / 180.0);
+            std_msgs::msg::String msg;
+            sensor_msgs::msg::Imu imu_msg;
+            // Extract and format sensor data
+            if (s_cDataUpdate & ANGLE_UPDATE)
+            {
+                msg.data += "Angle: ";
+                msg.data += std::to_string(fAngle[2]) + "\n";
                 s_cDataUpdate &= ~ANGLE_UPDATE;
             }
-            
-            
+        tf2::Quaternion q;
+        q.setRPY(0, 0, fAngle[2]);
+        imu_msg.header.stamp = rclcpp::Clock().now();
+        imu_msg.orientation.x = q.x();
+        imu_msg.orientation.y = q.y();
+        imu_msg.orientation.z = q.z();
+        imu_msg.orientation.w = q.w();
+            // RCLCPP_INFO(rclcpp::get_logger("string"), "Publishing: '%s'", msg.data.c_str());
+            // publisher_->publish(msg);
+            imu_pub_->publish(imu_msg);
         }
     }
 
@@ -127,23 +102,7 @@ int main(int argc, char *argv[])
     rclcpp::shutdown();
     return 0;
 }
-static void timer_callback(){
-    
-    tf2::Quaternion quaternion;
-    double temp = yaw_rad;
-                quaternion.setRPY(0.0, 0.0, temp);  // Roll = 0, Pitch = 0, Yaw = your_value
-                quaternion.normalize();
-            imu_msg.header.stamp = rclcpp::Clock().now();
-            imu_msg.orientation.x = quaternion.x();
-            imu_msg.orientation.y = quaternion.y();
-            imu_msg.orientation.z = quaternion.z();
-            imu_msg.orientation.w = quaternion.w();
 
-            // to add velocity
-
-            RCLCPP_INFO(rclcpp::get_logger("string"), "Publishing: '%.3f'", yaw_rad);
-            publisher_->publish(imu_msg);
-}
 static void SensorDataUpdate(uint32_t uiReg, uint32_t uiRegNum)
 {
     for (uint32_t i = 0; i < uiRegNum; i++)

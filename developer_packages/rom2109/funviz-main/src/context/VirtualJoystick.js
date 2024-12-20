@@ -14,7 +14,7 @@ const VirtualJoystick = ({ rosUrl = "ws://localhost:7070" }) => {
     // Set up the cmd_vel topic publisher
     cmdVelTopic.current = new ROSLIB.Topic({
       ros: ros.current,
-      name: "cmd_vel_web_to_twist",
+      name: "/diff_controller/cmd_vel_unstamped",
       messageType: "geometry_msgs/msg/Twist",
     });
 
@@ -41,9 +41,9 @@ const VirtualJoystick = ({ rosUrl = "ws://localhost:7070" }) => {
 
         let tmp_linear = 0.0;
         let tmp_angular= 0.0;
-        if(linear>0) { tmp_linear = 0.1; }
-        if(inverse_angular>0) { tmp_angular = 0.07; }
-        else if(inverse_angular<0) { tmp_angular = -0.07; }
+        if(linear>0) { tmp_linear = 0.1; tmp_angular = 0.0;}
+        else if(inverse_angular>0) { tmp_linear = 0.0; tmp_angular = 0.07; }
+        else if(inverse_angular<0) { tmp_linear = 0.0; tmp_angular = -0.07; }
         
         // Create and publish the Twist message
         const twist = new ROSLIB.Message({

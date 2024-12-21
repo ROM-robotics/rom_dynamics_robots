@@ -28,7 +28,7 @@ windows:
   - ROSBag: 
       root: /mytmux/bags
       panes:
-        - clear; source ~/.bashrc; sleep 10; ros2 bag record -o office_data_$(rom_date) /clock /scan /tf /tf_static /imu/out /odom
+        - clear; source ~/.bashrc; sleep 10; rm -rf office_data; ros2 bag record -o office_data /clock /scan /tf /tf_static /imu/out /odom
   - RosBridgeServer: 
       root: ~/
       panes:

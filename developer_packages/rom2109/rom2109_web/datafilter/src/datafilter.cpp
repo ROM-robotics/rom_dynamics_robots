@@ -36,9 +36,9 @@ class datafilter : public rclcpp::Node
     void listener_callback(const geometry_msgs::msg::Twist & raw_msg) const{
         double x = 0;
         double z = 0;
-        if(raw_msg.linear.x > 0){x = 0.1; z = 0;}
-        else if(raw_msg.linear.x < 0 && raw_msg.angular.z < 0){x = 0; z = 0.7;}
-        else if(raw_msg.linear.x < 0 && raw_msg.angular.z > 0){x = 0; z = -0.7;}
+        if(raw_msg.linear.x > 0){x = 0.10000; z = 0.000000;}
+        else if(raw_msg.linear.x < 0 && raw_msg.angular.z < 0){x = 0.00000; z = -0.70000;}
+        else if(raw_msg.linear.x < 0 && raw_msg.angular.z > 0){x = 0.00000; z = 0.70000;}
         else{x = 0; z = 0;}
         // if(raw_msg.angular.x < 0.8){raw_msg.angular.x = 0;}
         RCLCPP_INFO(this->get_logger(), "I heard: x:%.3f z:%.3f\n", x, z);

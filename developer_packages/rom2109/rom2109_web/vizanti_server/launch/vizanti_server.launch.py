@@ -71,12 +71,20 @@ def generate_launch_description():
         output='screen'
     )
 
+    data_filter = launch_ros.actions.Node(
+        name='cmd_filter',
+        package='datafilter',
+        executable='datafilter',
+        output='screen',
+    )
+
     return launch.LaunchDescription([
         rosbridge_node,
         rosapi_node,
         flask_node,
         tf_handler_node,
-        service_handler_node
+        service_handler_node,
+        data_filter,
     ])
 
 if __name__ == '__main__':

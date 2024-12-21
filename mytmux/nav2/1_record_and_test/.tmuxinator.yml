@@ -24,7 +24,7 @@ windows:
   - JoyStick: 
       root: ~/
       panes:
-        - clear; source ~/.bashrc; ros2 launch rom_robotics_joy joystick.launch.py
+        - clear; source ~/.bashrc; #ros2 launch rom_robotics_joy joystick.launch.py
   - ROSBag: 
       root: /mytmux/bags
       panes:

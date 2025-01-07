@@ -26,7 +26,7 @@ windows:
   - QtClient: 
       root: ~/
       panes:
-        - clear; source ~/.bashrc; 
+        - clear; source ~/.bashrc; # which_map_server & switch mode 
   - Npm: 
       root: ~/
       panes:
@@ -34,7 +34,7 @@ windows:
   - RosBridgeServer: 
       root: ~/
       panes:
-        - clear; source ~/.bashrc; #
+        - clear; source ~/.bashrc; ros2 launch rosbridge_server rosbridge_websocket_launch.xml
   - Debug: 
       root: ~/
       panes:

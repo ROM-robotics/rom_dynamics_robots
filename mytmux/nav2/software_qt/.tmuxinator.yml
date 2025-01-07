@@ -1,11 +1,13 @@
 # ./.tmuxinator.yml
 
 name: ROM Dynamics 
-root: /mytmux/bags
+root: ~/
 
 pre_window: export PS1=" \[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;45m\]>>>\[$(tput sgr0)\] \[$(tput sgr0)\]"
 
-startup_window: TwistKeyboard
+# USE ROM_ROBOT_MODEL as ( bobo | yoyo | rom2109 ) in BASHRC
+
+startup_window: Hardware
 # startup_pane: 0
 
 windows:
@@ -20,24 +22,20 @@ windows:
   - Navigation: 
       root: ~/
       panes:
-        - clear; source ~/.bashrc; sleep 3; #ros2 launch ${ROM_ROBOT_MODEL}_nav2 mapping.launch.py map_subscribe_transient_local:=true use_slamtoolbox:=False
-  - JoyStick: 
+        - clear; source ~/.bashrc; sleep 3; ros2 launch ${ROM_ROBOT_MODEL}_switch switch_mode.launch.py
+  - QtClient: 
       root: ~/
       panes:
-        - clear; source ~/.bashrc; #ros2 launch rom_robotics_joy joystick.launch.py
-  - ROSBag: 
-      root: /mytmux/bags
+        - clear; source ~/.bashrc; 
+  - Npm: 
+      root: ~/
       panes:
-        - clear; source ~/.bashrc; sleep 10; ros2 bag record -o office_data_$(rom_date) /clock /scan /tf /tf_static /imu/out /odom
+        - clear; source ~/.bashrc; #cd /home/mr_robot/devel_ws/src/rom2109/funviz-main; npm start
   - RosBridgeServer: 
       root: ~/
       panes:
-        - clear; source ~/.bashrc; ros2 launch vizanti_server vizanti_server.launch.py
+        - clear; source ~/.bashrc; #
   - Debug: 
       root: ~/
       panes:
         - clear; source ~/.bashrc;
-
-
-
-

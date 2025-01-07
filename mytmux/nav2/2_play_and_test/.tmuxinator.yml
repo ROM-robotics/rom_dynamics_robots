@@ -20,7 +20,7 @@ windows:
   - ROSBag: 
       root: /mytmux/bags
       panes:
-        - clear; source ~/.bashrc; ros2 bag play /home/mr_robot/office_data_887
+        - clear; source ~/.bashrc; ros2 bag play /home/mr_robot/office_data
 
 
 

@@ -1,0 +1,9 @@
+[submodule "developer_packages/rom_msgs"]
+	path = developer_packages/rom_msgs
+	url = https://github.com/ROM-robotics/rom_msgs.git
+[submodule "developer_packages/Ros_Qt5_Gui_App"]
+	path = developer_packages/Ros_Qt5_Gui_App
+	url = https://github.com/ROM-robotics/Ros_Qt5_Gui_App.git
+[submodule "developer_packages/ROS_Flutter_Gui_App"]
+	path = developer_packages/ROS_Flutter_Gui_App
+	url = https://github.com/ROM-robotics/ROS_Flutter_Gui_App.git

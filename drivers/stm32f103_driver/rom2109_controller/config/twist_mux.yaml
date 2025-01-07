@@ -17,3 +17,7 @@ twist_mux:
         topic: cmd_vel_web_to_twist # behavior tree
         timeout: 0.5
         priority: 100
+      qt:
+        topic: cmd_vel_from_qt # qt
+        timeout: 0.5
+        priority: 100

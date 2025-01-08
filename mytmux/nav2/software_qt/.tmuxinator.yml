@@ -31,7 +31,6 @@ windows:
       root: ~/
       panes:
         - clear; source ~/.bashrc; cd /home/mr_robot/Desktop/Git/rom_dynamics_robots/developer_packages/ros_flutter_gui_app_web; python3 -m http.server 8000
-; npm start
   - RosBridgeServer: 
       root: ~/
       panes:

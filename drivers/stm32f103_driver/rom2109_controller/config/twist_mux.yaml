@@ -2,11 +2,11 @@ twist_mux:
   ros__parameters:
     topics:
       navigation:
-        topic: cmd_vel_collision_to_twist # rviz goal
+        topic: cmd_vel_collision_to_twist # rviz goal , this come from /goal_pose
         timeout: 0.5
         priority: 10
       behavior:
-        topic: cmd_vel_bt_to_twist # behavior tree or server ?
+        topic: cmd_vel_bh_to_twist # behavior server and joystick from behavior server
         timeout: 0.5
         priority: 100
       joystick:
@@ -14,10 +14,10 @@ twist_mux:
         timeout: 0.5
         priority: 100
       web:
-        topic: cmd_vel # web
+        topic: cmd_vel # flutter web
         timeout: 0.5
         priority: 100
       qt:
-        topic: cmd_vel_from_qt # qt
+        topic: cmd_vel_qt_to_twist # qt
         timeout: 0.5
         priority: 100

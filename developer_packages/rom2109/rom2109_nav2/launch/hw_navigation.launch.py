@@ -12,6 +12,8 @@ from launch_ros.actions import Node
 from launch_ros.descriptions import ComposableNode
 from nav2_common.launch import RewrittenYaml
 
+#rom_prefix = "rom_"
+rom_prefix = ""
 
 def generate_launch_description():
     rom_robot_name = os.environ.get('ROM_ROBOT_MODEL', 'rom2109')
@@ -109,7 +111,7 @@ def generate_launch_description():
         condition=IfCondition(PythonExpression(['not ', use_composition])),
         actions=[
             Node(
-                package='nav2_controller',
+                package=f'{rom_prefix}nav2_controller',
                 executable='controller_server',
                 output='screen',
                 respawn=use_respawn,
@@ -146,7 +148,7 @@ def generate_launch_description():
                 respawn_delay=2.0,
                 parameters=[configured_params],
                 arguments=['--ros-args', '--log-level', log_level],
-                remappings=remapping+ [('cmd_vel_teleop', 'cmd_vel_teleop'), ('cmd_vel', 'cmd_vel_bhserver')]),
+                remappings=remapping+ [('cmd_vel_teleop', 'cmd_vel_teleop'), ('cmd_vel', 'cmd_vel_bh_to_twist')]),
             Node(
                 package='nav2_bt_navigator',
                 executable='bt_navigator',
@@ -187,7 +189,7 @@ def generate_launch_description():
                 respawn_delay=2.0,
                 parameters=[configured_params],
                 arguments=['--ros-args', '--log-level', log_level],
-                remappings=remapping+ [('cmd_vel', 'cmd_vel_smoother_to_collision'), ('cmd_vel_collision', 'cmd_vel_collision')]),
+                remappings=remapping+ [('cmd_vel', 'cmd_vel_smoother_to_collision'), ('cmd_vel_collision', 'cmd_vel_collision_to_twist')]),
             Node(
                 package='nav2_lifecycle_manager',
                 executable='lifecycle_manager',
@@ -227,7 +229,7 @@ def generate_launch_description():
                 plugin='behavior_server::BehaviorServer',
                 name='behavior_server',
                 parameters=[configured_params],
-                remappings=remapping+ [('cmd_vel_teleop', 'cmd_vel_teleop'), ('cmd_vel', 'cmd_vel_bhserver_to')]),
+                remappings=remapping+ [('cmd_vel_teleop', 'cmd_vel_teleop'), ('cmd_vel', 'cmd_vel_bh_to_twist')]),
             ComposableNode(
                 package='nav2_bt_navigator',
                 plugin='nav2_bt_navigator::BtNavigator',

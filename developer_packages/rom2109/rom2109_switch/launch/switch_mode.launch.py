@@ -47,7 +47,7 @@ def generate_launch_description():
     return LaunchDescription(
         [
             switch_node,
-            delay_tk_node,
+            #delay_tk_node,
             delayed_trigger_time_node,
         ]
     )

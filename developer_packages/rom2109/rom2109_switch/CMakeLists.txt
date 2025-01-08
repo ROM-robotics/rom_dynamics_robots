@@ -26,9 +26,13 @@ endif()
 add_executable(first_time_trigger src/first_time_trigger.cpp)
 ament_target_dependencies(first_time_trigger rclcpp std_msgs)
 
+add_executable(switch_mode_cpp src/switch_mode.cpp)
+ament_target_dependencies(switch_mode_cpp rclcpp std_msgs)
+
 
 install(TARGETS
   first_time_trigger
+  switch_mode_cpp
   DESTINATION lib/${PROJECT_NAME})
 
 

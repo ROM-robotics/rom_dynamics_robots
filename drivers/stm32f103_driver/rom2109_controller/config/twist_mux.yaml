@@ -2,7 +2,7 @@ twist_mux:
   ros__parameters:
     topics:
       navigation:
-        topic: cmd_vel_collision_to_twist # rviz goal , this come from /goal_pose
+        topic: cmd_vel_smoother_to_collision #cmd_vel_collision_to_twist # rviz goal , this come from /goal_pose
         timeout: 0.5
         priority: 10
       behavior:

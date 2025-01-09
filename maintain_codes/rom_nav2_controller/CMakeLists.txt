@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(nav2_controller)
+project(rom_nav2_controller)
 
 find_package(ament_cmake REQUIRED)
 find_package(nav2_core REQUIRED)

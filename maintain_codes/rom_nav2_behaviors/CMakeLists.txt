@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(nav2_behaviors)
+project(rom_nav2_behaviors)
 
 find_package(ament_cmake REQUIRED)
 find_package(nav2_common REQUIRED)

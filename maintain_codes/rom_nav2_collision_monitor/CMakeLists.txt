@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(nav2_collision_monitor)
+project(rom_nav2_collision_monitor)
 
 ### Dependencies ###
 

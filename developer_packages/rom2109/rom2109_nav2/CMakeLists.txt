@@ -30,17 +30,8 @@ endif()
 add_executable(init_robot_pose src/init_robot_pose.cpp)
 ament_target_dependencies(init_robot_pose rclcpp geometry_msgs tf2 tf2_geometry_msgs)
 
-add_executable(random_walk src/random_walk.cpp)
-ament_target_dependencies(random_walk rclcpp geometry_msgs)
-
-add_executable(circle_walk src/circle_walk.cpp)
-ament_target_dependencies(circle_walk rclcpp geometry_msgs)
-
-# FOR AMCL
 install(TARGETS
   init_robot_pose
-  circle_walk
-  random_walk
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY

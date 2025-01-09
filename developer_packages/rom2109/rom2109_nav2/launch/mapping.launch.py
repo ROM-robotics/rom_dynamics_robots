@@ -23,7 +23,7 @@ def generate_launch_description():
         description='Use use_slamtoolbox if True')
     
     declare_use_sim_time_cmd = DeclareLaunchArgument(
-        'use_sim_time', default_value='True',
+        'use_sim_time', default_value='False',
         description='Use use_sim_time if True')
 
     carto_slam = IncludeLaunchDescription(
@@ -60,7 +60,7 @@ def generate_launch_description():
             declare_use_sim_time_cmd,
             carto_slam,
             slamtoolbox_slam,
-            hw_navigation
+            #hw_navigation
         ]
     )
     

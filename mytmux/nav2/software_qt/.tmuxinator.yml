@@ -23,6 +23,10 @@ windows:
       root: ~/
       panes:
         - clear; source ~/.bashrc; ros2 launch ${ROM_ROBOT_MODEL}_carto mapping.launch.py use_rviz:=False use_sime_time:=False
+  - QTServer: 
+      root: ~/
+      panes:
+        - clear; source ~/.bashrc; sleep 3;ros2 run which_maps which_map_server
   - Navigation: 
       root: ~/
       panes:

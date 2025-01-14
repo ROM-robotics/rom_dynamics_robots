@@ -76,13 +76,5 @@ def generate_launch_description():
             parameters=[{'use_sim_time': use_sim_time}],
             output='screen',
             condition=IfCondition(use_rviz)
-            ),
-
-        Node(
-        package='nav2_map_server',
-        executable='map_server',
-        arguments=[
-            "yaml_filename",os.path.join(get_package_share_directory(f'{rom_robot_name}_nav2'), 'maps', 'default_map.yaml')
-            ],
         )        
     ])

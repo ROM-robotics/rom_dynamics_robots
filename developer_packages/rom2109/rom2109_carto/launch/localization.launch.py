@@ -50,7 +50,7 @@ def generate_launch_description():
             # remappings=[('/odom', '/diff_controller/odom')],
             arguments=['-configuration_directory', cartographer_config_dir,
                        '-configuration_basename', configuration_basename],
-            ),
+            ), # to add map.pbstream -> pgm -> map_server open ( how to save map by carto )
 
         DeclareLaunchArgument(
             'resolution',
@@ -62,11 +62,11 @@ def generate_launch_description():
             default_value=publish_period_sec,
             description='OccupancyGrid publishing period'),
 
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([ThisLaunchFileDir(), '/occupancy_grid.launch.py']),
-            launch_arguments={'use_sim_time': use_sim_time, 'resolution': resolution,
-                              'publish_period_sec': publish_period_sec}.items(),
-        ),
+        # IncludeLaunchDescription(
+        #     PythonLaunchDescriptionSource([ThisLaunchFileDir(), '/occupancy_grid.launch.py']),
+        #     launch_arguments={'use_sim_time': use_sim_time, 'resolution': resolution,
+        #                       'publish_period_sec': publish_period_sec}.items(),
+        # ),
 
         Node(
             package='rviz2',

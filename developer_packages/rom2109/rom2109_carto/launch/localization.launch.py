@@ -16,16 +16,41 @@ def generate_launch_description():
     use_rviz     = LaunchConfiguration('use_rviz', default='false')
     
     carto_pkg = get_package_share_directory(f'{rom_robot_name}_carto')
-    cartographer_config_dir = LaunchConfiguration('cartographer_config_dir', default=os.path.join(
-                                                  carto_pkg, 'config'))
-    configuration_basename = LaunchConfiguration('configuration_basename',
-                                                 default='rom_nav_2d.lua')
+    cartographer_config_dir = LaunchConfiguration('cartographer_config_dir', default=os.path.join(carto_pkg, 'config'))
+    configuration_basename = LaunchConfiguration('configuration_basename', default='rom_nav_2d.lua')
+    load_state_filename = LaunchConfiguration('load_state_filename', default='/home/mr_robot/data/maps/default.pbstream')
+
+    # <include file="$(find reeman_localization)/launch/match_map.launch">
 
     resolution = LaunchConfiguration('resolution', default='0.05')
     publish_period_sec = LaunchConfiguration('publish_period_sec', default='1.0')
 
-    rviz_config_dir = os.path.join(get_package_share_directory(f'{rom_robot_name}_carto'),
-                                   'rviz', 'cartographer.rviz')
+    rviz_config_dir = os.path.join(get_package_share_directory(f'{rom_robot_name}_carto'), 'rviz', 'cartographer.rviz')
+
+    # declare_use_map = DeclareLaunchArgument(
+    #     "use_map",
+    #     default_value="true",
+    #     description="Use prebuilt map for localization only."
+    # )
+    # declare_map_file = DeclareLaunchArgument(
+    #     "map_file",
+    #     default_value="/path/to/your/map.pbstream",
+    #     description="Path to the prebuilt .pbstream map file."
+    # )
+
+    # Cartographer Node
+    # cartographer_node = Node(
+    #     package="cartographer_ros",
+    #     executable="cartographer_node",
+    #     name="cartographer_node",
+    #     output="screen",
+    #     parameters=[
+    #         {"use_map": LaunchConfiguration("use_map")},
+    #         {"map_file": LaunchConfiguration("map_file")}
+    #     ],
+    #     arguments=["-configuration_directory", "/path/to/configuration_files",
+    #                "-configuration_basename", "your_configuration_file.lua"]
+    # )
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -49,7 +74,8 @@ def generate_launch_description():
             parameters=[{'use_sim_time': use_sim_time}],
             # remappings=[('/odom', '/diff_controller/odom')],
             arguments=['-configuration_directory', cartographer_config_dir,
-                       '-configuration_basename', configuration_basename],
+                       '-configuration_basename', configuration_basename,
+                       '-load_state_filename', load_state_filename],
             ), # to add map.pbstream -> pgm -> map_server open ( how to save map by carto )
 
         DeclareLaunchArgument(

@@ -18,7 +18,7 @@ def generate_launch_description():
     carto_pkg = get_package_share_directory(f'{rom_robot_name}_carto')
     cartographer_config_dir = LaunchConfiguration('cartographer_config_dir', default=os.path.join(carto_pkg, 'config'))
     configuration_basename = LaunchConfiguration('configuration_basename', default='rom_nav_2d.lua')
-    load_state_filename = LaunchConfiguration('load_state_filename', default='/home/mr_robot/data/maps/default.pbstream')
+    load_state_filename = LaunchConfiguration('load_state_filename', default='/home/mr_robot/data/maps/default_map.pbstream')
 
     # <include file="$(find reeman_localization)/launch/match_map.launch">
 

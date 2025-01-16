@@ -14,7 +14,7 @@ twist_mux:
         timeout: 0.5
         priority: 100
       web:
-        topic: cmd_vel # flutter web
+        topic: cmd_vel_web_to_twist # flutter web
         timeout: 0.5
         priority: 100
       qt:

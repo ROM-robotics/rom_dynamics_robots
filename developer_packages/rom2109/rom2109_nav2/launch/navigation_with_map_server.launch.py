@@ -11,6 +11,7 @@ from launch_ros.actions import LoadComposableNodes
 from launch_ros.actions import Node
 from launch_ros.descriptions import ComposableNode
 from nav2_common.launch import RewrittenYaml
+from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy
 
 prefix = 'rom_'
 #prefix = ''
@@ -29,11 +30,17 @@ def generate_launch_description():
     use_respawn = LaunchConfiguration('use_respawn')
     log_level = LaunchConfiguration('log_level')
 
+    qos_profile_map = QoSProfile(
+        reliability=QoSReliabilityPolicy.RELIABLE,
+        durability=QoSDurabilityPolicy.TRANSIENT_LOCAL
+    )
+
     lifecycle_nodes = ['controller_server',
                        'smoother_server',
                        'planner_server',
                        'behavior_server',
                        'bt_navigator',
+                       'map_server',
                        'waypoint_follower',
                        'velocity_smoother']
 
@@ -103,7 +110,8 @@ def generate_launch_description():
                 executable='map_server',
                 name='map_server',
                 output='screen',
-                parameters=[LaunchConfiguration('params_file')]
+                parameters=[LaunchConfiguration('params_file')],
+                qos_profile=qos_profile_map,
             ),
             Node(
                 package=f'{prefix}nav2_controller',
@@ -212,6 +220,14 @@ def generate_launch_description():
                 name='smoother_server',
                 parameters=[configured_params],
                 remappings=remapping),
+            # ComposableNode(
+            #     package='nav2_map_server',
+            #     executable='::map_server',
+            #     name='map_server',
+            #     output='screen',
+            #     parameters=[LaunchConfiguration('params_file')],
+            #     qos_profile=qos_profile_map,
+            # ),
             ComposableNode(
                 package=f'{prefix}nav2_planner',
                 plugin='nav2_planner::PlannerServer',

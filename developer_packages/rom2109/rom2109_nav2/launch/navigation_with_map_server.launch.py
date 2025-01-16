@@ -1,4 +1,5 @@
 # Copyright (c) 2018 Intel Corporation
+# Copyleft (🄯) 2025 ROM Robotics Corporation
 import os
 
 from ament_index_python.packages import get_package_share_directory
@@ -11,7 +12,6 @@ from launch_ros.actions import LoadComposableNodes
 from launch_ros.actions import Node
 from launch_ros.descriptions import ComposableNode
 from nav2_common.launch import RewrittenYaml
-from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy
 
 prefix = 'rom_'
 #prefix = ''
@@ -30,10 +30,6 @@ def generate_launch_description():
     use_respawn = LaunchConfiguration('use_respawn')
     log_level = LaunchConfiguration('log_level')
 
-    qos_profile_map = QoSProfile(
-        reliability=QoSReliabilityPolicy.RELIABLE,
-        durability=QoSDurabilityPolicy.TRANSIENT_LOCAL
-    )
 
     lifecycle_nodes = ['controller_server',
                        'smoother_server',
@@ -111,7 +107,6 @@ def generate_launch_description():
                 name='map_server',
                 output='screen',
                 parameters=[LaunchConfiguration('params_file')],
-                qos_profile=qos_profile_map,
             ),
             Node(
                 package=f'{prefix}nav2_controller',

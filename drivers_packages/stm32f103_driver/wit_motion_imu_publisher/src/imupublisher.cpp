@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
             WitSerialDataIn(cBuff[0]);
         }
         std::cout << "\n";
-        Delayms(500);
+        Delayms(50);
 
         if (s_cDataUpdate)
         {

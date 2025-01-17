@@ -118,6 +118,7 @@ fi
 source /opt/ros/humble/setup.bash
 source /home/mr_robot/devel_ws/install/setup.bash
 source /home/mr_robot/qt_ros_ws/install/setup.bash
+source /home/mr_robot/maintain_ws/install/setup.bash
 
 export ROM_ROBOT_MODEL=rom2109
 #export ROM_ROBOT_MODEL=yoyo
@@ -128,15 +129,13 @@ export ANGULAR_SPEED='0.08'
 
 alias bb='colcon build && source install/setup.bash'
 alias delete_workspace='rm -rf build install log; echo "Done"'
+alias bb_save='colcon build --executor sequential --parallel-workers 4'
+alias bb_rm='colcon build && source install/setup.bash && rm -rf src/*'
+alias bb_save_rm='colcon build --executor sequential --parallel-workers 4 && rm -rf src/*'
+alias commit_push='git add *; git commit -m "update"; git push origin humble-devel'
 
-#export ROM_GZ_WORLD=square.world
-#export ROM_GZ_WORLD=willow.world
-#export ROM_GZ_WORLD=sonoma_raceway.world
-#export ROM_GZ_WORLD=maze.world
-
-source /usr/share/gazebo/setup.bash
 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-export ROS_DOMAIN_ID=0
+export ROS_DOMAIN_ID=73
 export QT_QPA_PLATFORM=xcb
 
 # my new languages

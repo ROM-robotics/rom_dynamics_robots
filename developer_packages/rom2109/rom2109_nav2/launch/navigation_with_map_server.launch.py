@@ -47,7 +47,8 @@ def generate_launch_description():
     # TODO(orduno) Substitute with `PushNodeRemapping`
     #              https://github.com/ros2/launch_ros/issues/56
     remapping = [('/tf', 'tf'),
-                  ('/tf_static', 'tf_static')]
+                  ('/tf_static', 'tf_static'),
+                  ('/diffbot_base_controller/odom', 'odom'),]
 
     # Create our own temporary YAML files that include substitutions
     param_substitutions = {

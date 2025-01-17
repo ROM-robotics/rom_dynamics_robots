@@ -43,7 +43,7 @@ struct Config
 {
   std::string left_wheel_name = "";
   std::string right_wheel_name = "";
-  float loop_rate = 20.0;
+  float loop_rate = 100;
   std::string device = "";
   int baud_rate = 0;
   int timeout_ms = 0;

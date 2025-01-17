@@ -162,7 +162,9 @@ hardware_interface::CallbackReturn DiffDriveStm32Hardware::on_deactivate(const r
 }
 
 hardware_interface::return_type DiffDriveStm32Hardware::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period)
-{
+{ 
+  static auto last_call_time = rclcpp::Clock().now();  //test with gg hz
+  auto start_time = rclcpp::Clock().now();
   
   if (!comms_.connected())
   {
@@ -190,7 +192,15 @@ hardware_interface::return_type DiffDriveStm32Hardware::read(const rclcpp::Time 
   RCLCPP_INFO(rclcpp::get_logger("Zeroing Test"), "left wheel pos : %.15f", wheel_l_.pos);
   RCLCPP_INFO(rclcpp::get_logger("Zeroing Test"), "rad_per_count : %.15f \033[1;0m", wheel_l_.rads_per_count);
   */
- 
+
+  auto end_time = rclcpp::Clock().now();
+  auto time_taken = (end_time - start_time).seconds();
+  auto rate = 1.0 / (end_time - last_call_time).seconds();
+  last_call_time = end_time;
+
+  RCLCPP_INFO(rclcpp::get_logger("diff_drive_stm32"),  
+              "Read executed in %.6f seconds. Rate: %.2f Hz", time_taken, rate);
+
   return hardware_interface::return_type::OK;
 }
 

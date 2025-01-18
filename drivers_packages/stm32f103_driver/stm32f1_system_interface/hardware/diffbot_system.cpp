@@ -10,17 +10,18 @@
 #include "rclcpp/rclcpp.hpp"
 
 const double rds_to_rpm_constant = 60/(2*M_PI);
+
 namespace stm32f1_system_interface
 {
 
-hardware_interface::CallbackReturn DiffDriveStm32Hardware::on_init(const hardware_interface::HardwareInfo & info)
+hardware_interface::CallbackReturn 
+DiffDriveStm32Hardware::on_init(const hardware_interface::HardwareInfo & info)
 {
-  if (
-    hardware_interface::SystemInterface::on_init(info) !=
-    hardware_interface::CallbackReturn::SUCCESS)
+  if (hardware_interface::SystemInterface::on_init(info) != hardware_interface::CallbackReturn::SUCCESS)
   {
     return hardware_interface::CallbackReturn::ERROR;
   }
+
   cfg_.left_wheel_name = info_.hardware_parameters["left_wheel_name"];
   cfg_.right_wheel_name = info_.hardware_parameters["right_wheel_name"];
   cfg_.loop_rate = std::stof(info_.hardware_parameters["loop_rate"]);
@@ -28,22 +29,11 @@ hardware_interface::CallbackReturn DiffDriveStm32Hardware::on_init(const hardwar
   cfg_.baud_rate = std::stoi(info_.hardware_parameters["baud_rate"]);
   cfg_.timeout_ms = std::stoi(info_.hardware_parameters["timeout_ms"]);
   cfg_.enc_counts_per_rev = std::stoi(info_.hardware_parameters["enc_counts_per_rev"]);
+
   RCLCPP_INFO(rclcpp::get_logger(" ================= "), "================================");
   RCLCPP_INFO(rclcpp::get_logger(" \033[1;36mDEEP BLUE AI LAB \033[1;0m "), " \033[1;36m& ROM Robotics is checking ... \033[1;0m");
   RCLCPP_INFO(rclcpp::get_logger(" ================= "), "================================");
-  if (info_.hardware_parameters.count("pid_p") > 0)
-  {
-    cfg_.pid_p = std::stoi(info_.hardware_parameters["pid_p"]);
-    cfg_.pid_d = std::stoi(info_.hardware_parameters["pid_d"]);
-    cfg_.pid_i = std::stoi(info_.hardware_parameters["pid_i"]);
-    cfg_.pid_o = std::stoi(info_.hardware_parameters["pid_o"]);
-  }
-  else
-  {
-    RCLCPP_INFO(rclcpp::get_logger("DiffDriveStm32Hardware"), "PID values not supplied, using defaults.");
-  }
   
-
   wheel_l_.setup(cfg_.left_wheel_name, cfg_.enc_counts_per_rev);
   wheel_r_.setup(cfg_.right_wheel_name, cfg_.enc_counts_per_rev);
 
@@ -85,7 +75,9 @@ hardware_interface::CallbackReturn DiffDriveStm32Hardware::on_init(const hardwar
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
-std::vector<hardware_interface::StateInterface> DiffDriveStm32Hardware::export_state_interfaces()
+
+std::vector<hardware_interface::StateInterface> 
+DiffDriveStm32Hardware::export_state_interfaces()
 {
   std::vector<hardware_interface::StateInterface> state_interfaces;
 
@@ -98,7 +90,9 @@ std::vector<hardware_interface::StateInterface> DiffDriveStm32Hardware::export_s
   return state_interfaces;
 }
 
-std::vector<hardware_interface::CommandInterface> DiffDriveStm32Hardware::export_command_interfaces()
+
+std::vector<hardware_interface::CommandInterface> 
+DiffDriveStm32Hardware::export_command_interfaces()
 {
   std::vector<hardware_interface::CommandInterface> command_interfaces;
 
@@ -111,49 +105,48 @@ std::vector<hardware_interface::CommandInterface> DiffDriveStm32Hardware::export
   return command_interfaces;
 }
 
-hardware_interface::CallbackReturn DiffDriveStm32Hardware::on_configure(const rclcpp_lifecycle::State & /*previous_state*/)
+
+hardware_interface::CallbackReturn 
+DiffDriveStm32Hardware::on_configure(const rclcpp_lifecycle::State & /*previous_state*/)
 {
   RCLCPP_INFO(rclcpp::get_logger("DiffDriveStm32Hardware"), "Configuring ...please wait...");
-  if (comms_.connected())
-  {
-    comms_.disconnect();
-  }
+
+  if (comms_.connected()) { comms_.disconnect(); }
+
   comms_.connect(cfg_.device, cfg_.baud_rate, cfg_.timeout_ms);
   RCLCPP_INFO(rclcpp::get_logger("DiffDriveStm32Hardware"), "Successfully configured!");
 
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
-hardware_interface::CallbackReturn DiffDriveStm32Hardware::on_cleanup(const rclcpp_lifecycle::State & /*previous_state*/)
+hardware_interface::CallbackReturn 
+DiffDriveStm32Hardware::on_cleanup(const rclcpp_lifecycle::State & /*previous_state*/)
 {
   RCLCPP_INFO(rclcpp::get_logger("DiffDriveStm32Hardware"), "Cleaning up ...please wait...");
-  if (comms_.connected())
-  {
-    comms_.disconnect();
-  }
+
+  if (comms_.connected())  { comms_.disconnect(); }
+
   RCLCPP_INFO(rclcpp::get_logger("DiffDriveStm32Hardware"), "Successfully cleaned up!");
 
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
 
-hardware_interface::CallbackReturn DiffDriveStm32Hardware::on_activate(const rclcpp_lifecycle::State & /*previous_state*/)
+hardware_interface::CallbackReturn 
+DiffDriveStm32Hardware::on_activate(const rclcpp_lifecycle::State & /*previous_state*/)
 {
   RCLCPP_INFO(rclcpp::get_logger("DiffDriveStm32Hardware"), "Activating ...please wait...");
-  if (!comms_.connected())
-  {
-    return hardware_interface::CallbackReturn::ERROR;
-  }
-  if (cfg_.pid_p > 0)
-  {
-    comms_.set_pid_values(cfg_.pid_p,cfg_.pid_d,cfg_.pid_i,cfg_.pid_o);
-  }
+
+  if (!comms_.connected()) { return hardware_interface::CallbackReturn::ERROR; }
+  
   RCLCPP_INFO(rclcpp::get_logger("DiffDriveStm32Hardware"), "Successfully activated!");
 
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
-hardware_interface::CallbackReturn DiffDriveStm32Hardware::on_deactivate(const rclcpp_lifecycle::State & /*previous_state*/)
+
+hardware_interface::CallbackReturn 
+DiffDriveStm32Hardware::on_deactivate(const rclcpp_lifecycle::State & /*previous_state*/)
 {
   RCLCPP_INFO(rclcpp::get_logger("DiffDriveStm32Hardware"), "Deactivating ...please wait...");
   RCLCPP_INFO(rclcpp::get_logger("DiffDriveStm32Hardware"), "Successfully deactivated!");
@@ -161,7 +154,8 @@ hardware_interface::CallbackReturn DiffDriveStm32Hardware::on_deactivate(const r
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
-hardware_interface::return_type DiffDriveStm32Hardware::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period)
+hardware_interface::return_type 
+DiffDriveStm32Hardware::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period)
 { 
   static auto last_call_time = rclcpp::Clock().now();  //test with gg hz
   auto start_time = rclcpp::Clock().now();
@@ -175,6 +169,7 @@ hardware_interface::return_type DiffDriveStm32Hardware::read(const rclcpp::Time 
   comms_.read_encoder_values(wheel_r_.enc, wheel_l_.enc);
 
   double delta_seconds = period.seconds();
+
   // Encoder values to wheel positions ( Author say check encoder overflows )
   float prev_l_pos = wheel_l_.pos;
   wheel_l_.pos = wheel_l_.calc_enc_angle();                     // (radian )calculation Ok, but check encoder overflow
@@ -198,13 +193,13 @@ hardware_interface::return_type DiffDriveStm32Hardware::read(const rclcpp::Time 
   auto rate = 1.0 / (end_time - last_call_time).seconds();
   last_call_time = end_time;
 
-  RCLCPP_INFO(rclcpp::get_logger("diff_drive_stm32"),  
-              "Read executed in %.6f seconds. Rate: %.2f Hz", time_taken, rate);
+  RCLCPP_INFO(rclcpp::get_logger("diff_drive_stm32"), "Read executed in %.6f seconds. Rate: %.2f Hz", time_taken, rate);
 
   return hardware_interface::return_type::OK;
 }
 
-hardware_interface::return_type stm32f1_system_interface ::DiffDriveStm32Hardware::write(const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
+hardware_interface::return_type 
+stm32f1_system_interface ::DiffDriveStm32Hardware::write(const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
 {
   if (!comms_.connected())
   {
@@ -232,5 +227,4 @@ hardware_interface::return_type stm32f1_system_interface ::DiffDriveStm32Hardwar
 }  // namespace stm32f1_system_interface
 
 #include "pluginlib/class_list_macros.hpp"
-PLUGINLIB_EXPORT_CLASS(
-  stm32f1_system_interface::DiffDriveStm32Hardware, hardware_interface::SystemInterface)
+PLUGINLIB_EXPORT_CLASS(stm32f1_system_interface::DiffDriveStm32Hardware, hardware_interface::SystemInterface)

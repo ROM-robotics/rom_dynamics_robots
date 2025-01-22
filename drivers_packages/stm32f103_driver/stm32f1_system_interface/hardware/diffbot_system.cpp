@@ -193,7 +193,7 @@ DiffDriveStm32Hardware::read(const rclcpp::Time & /*time*/, const rclcpp::Durati
   auto rate = 1.0 / (end_time - last_call_time).seconds();
   last_call_time = end_time;
 
-  RCLCPP_INFO(rclcpp::get_logger("diff_drive_stm32"), "Read executed in %.6f seconds. Rate: %.2f Hz", time_taken, rate);
+  //RCLCPP_INFO(rclcpp::get_logger("diff_drive_stm32"), "Read executed in %.6f seconds. Rate: %.2f Hz", time_taken, rate);
 
   return hardware_interface::return_type::OK;
 }

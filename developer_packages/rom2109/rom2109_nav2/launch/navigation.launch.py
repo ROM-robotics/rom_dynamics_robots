@@ -16,8 +16,9 @@ prefix = 'rom_'
 #prefix = ''
 
 def generate_launch_description():
+    rom_robot_name = os.environ.get('ROM_ROBOT_MODEL', 'rom2109')
     # Get the launch directory
-    bringup_dir = get_package_share_directory('rom2109_nav2')
+    bringup_dir = get_package_share_directory(f'{rom_robot_name}_nav2')
 
     namespace = LaunchConfiguration('namespace')
     use_sim_time = LaunchConfiguration('use_sim_time')

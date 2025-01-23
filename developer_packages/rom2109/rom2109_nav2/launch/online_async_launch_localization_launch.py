@@ -8,6 +8,7 @@ from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
+    rom_robot_name = os.environ.get('ROM_ROBOT_MODEL', 'bobo')
     use_sim_time = LaunchConfiguration('use_sim_time')
     slam_params_file = LaunchConfiguration('slam_params_file')
 
@@ -17,7 +18,7 @@ def generate_launch_description():
         description='Use simulation/Gazebo clock')
     declare_slam_params_file_cmd = DeclareLaunchArgument(
         'slam_params_file',
-        default_value=os.path.join(get_package_share_directory("rom2109_nav2"),
+        default_value=os.path.join(get_package_share_directory(f'{rom_robot_name}_nav2'),
                                    'config', 'mapper_params_online_async_localization.yaml'),
         description='Full path to the ROS2 parameters file to use for the slam_toolbox node')
 

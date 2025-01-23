@@ -7,3 +7,6 @@
 [submodule "submodule_packages/ros_qt5_gui_app"]
 	path = submodule_packages/ros_qt5_gui_app
 	url = git@github.com:ROM-robotics/Ros_Qt5_Gui_App.git
+[submodule "submodule_packages/salt_n_pepper"]
+	path = submodule_packages/salt_n_pepper
+	url = git@github.com:ROM-robotics/salt_n_pepper.git

@@ -49,7 +49,7 @@ def generate_launch_description():
         cmd=[
             'sed', '-i', 
             's/enable_odom_tf: true/enable_odom_tf: false/g', 
-            f'/home/mr_robot/Desktop/Git/rom_dynamics_robots/drivers/stm32f103_driver/{rom_robot_name}_controller/config/{rom_robot_name}_controllers.yaml'
+            f'/home/mr_robot/Desktop/Git/rom_dynamics_robots/drivers_packages/stm32f103_driver/{rom_robot_name}_controller/config/{rom_robot_name}_controllers.yaml'
         ],
         output='screen',
         # cmd=['ros2', 'param', 'set', '/diff_cont', 'enagle_odom_tf', 'True'],
@@ -59,7 +59,7 @@ def generate_launch_description():
         cmd=[
             'sed', '-i', 
             's/enable_odom_tf: false/enable_odom_tf: true/g', 
-            f'/home/mr_robot/Desktop/Git/rom_dynamics_robots/drivers/stm32f103_driver/{rom_robot_name}_controller/config/{rom_robot_name}_controllers.yaml'
+            f'/home/mr_robot/Desktop/Git/rom_dynamics_robots/drivers_packages/stm32f103_driver/{rom_robot_name}_controller/config/{rom_robot_name}_controllers.yaml'
         ],
         output='screen',
         # cmd=['ros2', 'param', 'set', '/diff_cont', 'enagle_odom_tf', 'False'],

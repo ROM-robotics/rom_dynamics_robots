@@ -26,7 +26,11 @@ windows:
   - NavSwitcherQt: 
       root: ~/
       panes:
-        - clear; source ~/.bashrc; sleep 3; ros2 run which_maps which_nav_server #ros2 launch ${ROM_ROBOT_MODEL}_nav2 hw_navigation.launch.py use_composition:=False use_sime_time:=False
+        - clear; source ~/.bashrc; sleep 3; ros2 run which_maps which_nav_server 
+  - CmdServerQt: 
+      root: ~/
+      panes:
+        - clear; source ~/.bashrc; sleep 3; ros2 run which_maps which_vel_server
   - Flutter: 
       root: ~/
       panes:

@@ -12,34 +12,34 @@ startup_window: Hardware
 
 windows:
   - Hardware: 
-      root: ~/
+      root: ~/devel_ws/
       panes:
         - clear; source ~/.bashrc; ros2 launch ${ROM_ROBOT_MODEL}_controller hardware.launch.py odom_tf:=False use_rviz:=False use_lidar:=True use_imu:=True
   - EKF: 
-      root: ~/
+      root: ~/devel_ws/
       panes:
         - clear; source ~/.bashrc; ros2 launch ${ROM_ROBOT_MODEL}_ekf ekf.launch.py publish_tf:=True use_sim_time:=False
-  - CartoSwitcherQt: 
-      root: ~/
+  - CartoServer: 
+      root: ~/devel_ws/
       panes:
         - clear; source ~/.bashrc; sleep 3;ros2 run which_maps which_maps_server
-  - NavSwitcherQt: 
-      root: ~/
+  - NavChanger: 
+      root: ~/devel_ws/
       panes:
         - clear; source ~/.bashrc; sleep 3; ros2 run which_maps which_nav_server 
-  - CmdServerQt: 
-      root: ~/
+  - CmdServer: 
+      root: ~/devel_ws/
       panes:
         - clear; source ~/.bashrc; sleep 3; ros2 run which_maps which_vel_server
   - Flutter: 
-      root: ~/
+      root: ~/devel_ws/
       panes:
         - clear; source ~/.bashrc; cd /home/mr_robot/Desktop/Git/rom_dynamics_robots/submodule_packages/ros_flutter_gui_app_web; python3 -m http.server 8000
   - RosBridgeServer: 
-      root: ~/
+      root: ~/devel_ws/
       panes:
         - clear; source ~/.bashrc; ros2 launch rosbridge_server rosbridge_websocket_launch.xml
   - Debug: 
-      root: ~/
+      root: ~/devel_ws/
       panes:
         - clear; source ~/.bashrc;

@@ -31,6 +31,14 @@ windows:
       root: ~/devel_ws/
       panes:
         - clear; source ~/.bashrc; sleep 3; ros2 run which_maps which_vel_server
+  - YamlServer: 
+      root: ~/devel_ws/
+      panes:
+        - clear; source ~/.bashrc; sleep 3; ros2 run rom_waypoints_provider construct_yaml_server
+  - WpServer: 
+      root: ~/devel_ws/
+      panes:
+        - clear; source ~/.bashrc; sleep 3; ros2 run rom_waypoints_provider send_waypoints_server
   - Flutter: 
       root: ~/devel_ws/
       panes:

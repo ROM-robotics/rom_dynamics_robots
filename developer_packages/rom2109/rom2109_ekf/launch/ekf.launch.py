@@ -19,5 +19,10 @@ def generate_launch_description():
             parameters=[os.path.join(get_package_share_directory(f'{rom_robot_name}_ekf'), 'config', 'ekf.yaml')],
             remappings=[('cmd_vel', 'diff_controller/cmd_vel_unstamped'),('odometry/filtered' , 'odom' ), ('set_pose' , 'initialpose')],
            ),
+        launch_ros.actions.Node(
+            package='rom_waypoints_provider',
+            executable='robot_pose_publisher',
+            name='robot_pose_publisher',
+           ),
 
 ])

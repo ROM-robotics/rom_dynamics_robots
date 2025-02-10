@@ -1,3 +1,6 @@
+localization:
+  plugin: "nav2_cartographer::CartographerLocalization"
+
 amcl:
   ros__parameters:
     use_sim_time: False

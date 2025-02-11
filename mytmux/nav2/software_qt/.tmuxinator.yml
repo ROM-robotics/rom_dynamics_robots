@@ -38,7 +38,7 @@ windows:
   - WpServer: 
       root: ~/devel_ws/
       panes:
-        - clear; source ~/.bashrc; sleep 3; ros2 run rom_waypoints_provider send_waypoints_server
+        - clear; source ~/.bashrc; sleep 3; #ros2 run rom_waypoints_provider send_waypoints_server
   - Flutter: 
       root: ~/devel_ws/
       panes:

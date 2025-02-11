@@ -72,7 +72,7 @@ def generate_launch_description():
             name='cartographer_node',
             output='screen',
             parameters=[{'use_sim_time': use_sim_time}],
-            # remappings=[('/odom', '/diff_controller/odom')],
+            # remappings=[('/odom', '/ekf_odom_local')],
             arguments=['-configuration_directory', cartographer_config_dir,
                        '-configuration_basename', configuration_basename,
                        '-load_state_filename', load_state_filename],

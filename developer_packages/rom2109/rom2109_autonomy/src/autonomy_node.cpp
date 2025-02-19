@@ -3,8 +3,7 @@
 
 using namespace std::chrono_literals;
 
-const std::string bt_xml_dir =
-    ament_index_cpp::get_package_share_directory("rom2109_autonomy") + "/bt_xml";
+const std::string bt_xml_dir = ament_index_cpp::get_package_share_directory("rom2109_autonomy") + "/bt_xml";
 
 AutonomyNode::AutonomyNode(const std::string &nodeName) : Node(nodeName)
 {
@@ -34,8 +33,7 @@ void AutonomyNode::create_behavior_tree()
 
   // register bt node
 
-  BT::NodeBuilder builder =
-      [=](const std::string &name, const BT::NodeConfiguration &config)
+  BT::NodeBuilder builder = [=](const std::string &name, const BT::NodeConfiguration &config)
   {
     return std::make_unique<GoToPose>(name, config, shared_from_this());
   };

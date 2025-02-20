@@ -1,0 +1,22 @@
+ros2 param dump /controller_server > controller_server_params_composable.yaml
+ros2 param dump /map_server > map_server_params_composable.yaml
+ros2 param dump /smoother_server > smoother_server_params_composable.yaml
+ros2 param dump /planner_server > planner_server_params_composable.yaml
+ros2 param dump /behavior_server > behavior_server_params_composable.yaml
+ros2 param dump /bt_navigator > bt_navigator_params_composable.yaml
+ros2 param dump /waypoint_follower > waypoint_follower_params_composable.yaml
+ros2 param dump /velocity_smoother > velocity_smoother_params_composable.yaml
+ros2 param dump /controller_server > controller_server_params_composable.yaml
+
+
+ros2 param dump /controller_server > controller_server_params_composable.yaml
+ros2 param dump /map_server > map_server_params_composable.yaml
+ros2 param dump /smoother_server > smoother_server_params_composable.yaml
+ros2 param dump /planner_server > planner_server_params_composable.yaml
+ros2 param dump /behavior_server > behavior_server_params_composable.yaml
+ros2 param dump /bt_navigator > bt_navigator_params_composable.yaml
+ros2 param dump /waypoint_follower > waypoint_follower_params_composable.yaml
+ros2 param dump /velocity_smoother > velocity_smoother_params_composable.yaml
+ros2 param dump /controller_server > controller_server_params_composable.yaml
+
+

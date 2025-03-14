@@ -1,0 +1,6 @@
+image: myhome.pgm
+resolution: 0.050000
+origin: [-3.687360, -2.761290, 0.0]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196

@@ -50,4 +50,4 @@ windows:
   - Debug: 
       root: ~/devel_ws/
       panes:
-        - clear; source ~/.bashrc;
+        - clear; source ~/.bashrc; ros2 run rom_waypoints_provider construct_xml_server_bt
